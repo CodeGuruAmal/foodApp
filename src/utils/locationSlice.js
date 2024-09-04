@@ -5,7 +5,7 @@ const locationSlice = createSlice({
   initialState: {
     locationSearchTerm: "",
     locationData: [],
-    placeId:"",
+    placeId: JSON.parse(localStorage.getItem("placeId")) || "ChIJwe1EZjDG5zsRaYxkjY_tpF0",
     coordinates: []
   },
   reducers: {
@@ -17,6 +17,7 @@ const locationSlice = createSlice({
     },
     setPlaceId: (state, action) => {
       state.placeId = action.payload;
+      localStorage.setItem("placeId", JSON.stringify(action.payload));
     },
     setCoordinates: (state, action) => {
       state.coordinates = action.payload;

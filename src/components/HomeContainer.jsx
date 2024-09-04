@@ -15,50 +15,39 @@ const HomeContainer = () => {
   const coordinates = useSelector((state) => state.location.coordinates);
   const dispatch = useDispatch();
 
-
   useEffect(() => {
-    axios
-      .get(
-        `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${
-          coordinates?.geometry?.location?.lat
-            ? coordinates?.geometry?.location?.lat
-            : 19.0759837
-        }&lng=${
-          coordinates?.geometry?.location?.lng
-            ? coordinates?.geometry?.location?.lng
-            : 72.8776559
-        }&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
-      )
-      .then((res) => dispatch(setHomeData(res?.data?.data)))
-      .catch((err) => console.log(err));
-  }, [
-    coordinates?.geometry?.location?.lat,
-    coordinates?.geometry?.location?.lng,
-  ]);
+    if (coordinates?.geometry?.location) {
+      axios
+        .get(
+          `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${coordinates.geometry.location.lat}&lng=${coordinates.geometry.location.lng}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
+        )
+        .then((res) => dispatch(setHomeData(res?.data?.data)))
+        .catch((err) => console.log(err));
+    }
+  }, [coordinates]);
+  
 
   if (homeData.communication) {
     return <NoService />;
-  } 
+  }
 
-
-
-  
   if (!homeData || !homeData.cards) {
     return <div className="absolute top-24 text-3xl">Loading...</div>; // Show a loading message or spinner
   }
 
-
-    return (
-      <div
-        className={`md:w-[75%] w-full left-1/2 px-5 -translate-x-1/2 absolute top-24 ${
-          locationClick || menuClick || cartClick ? "max-h-[85vh] overflow-hidden" : ""
-        } `}
-      >
-        <OnYourMind />
-        <TopRestaurant />
-        <WithOnlineDelivery />
-      </div>
-    );
+  return (
+    <div
+      className={`md:w-[75%] w-full left-1/2 px-5 -translate-x-1/2 absolute top-24 ${
+        locationClick || menuClick || cartClick
+          ? "max-h-[85vh] overflow-hidden"
+          : ""
+      } `}
+    >
+      <OnYourMind />
+      <TopRestaurant />
+      <WithOnlineDelivery />
+    </div>
+  );
 };
 
 export default HomeContainer;

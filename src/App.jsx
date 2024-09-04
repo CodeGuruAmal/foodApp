@@ -1,15 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Navbar from './components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import HomeContainer from './components/HomeContainer'
 import RestaurantMenu from './components/RestaurantMenu'
 import SearchFood from './components/SearchFood'
-import { useDispatch } from 'react-redux'
-import { setAddedItem, setCartData } from './utils/cartSlice'
-import { setPlaceId } from './utils/locationSlice'
 
 const App = () => {
-  const dispatch = useDispatch();
 
 
 

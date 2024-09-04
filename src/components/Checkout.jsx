@@ -6,6 +6,7 @@ import { MdStars } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { setCartClick, setMenuClick } from "../utils/navSlice";
 import { clearCart, removeItem, setAddedItem, setCartData } from "../utils/cartSlice";
+import toast from "react-hot-toast";
 
 const Checkout = () => {
   const cartData = useSelector((state) => state?.cart?.cartData);
@@ -19,11 +20,19 @@ const Checkout = () => {
   const [isDescExpanded, setIsDescExpanded] = useState([]);
 
   const handleRemoveItem = (itemId) => {
-    dispatch(removeItem(itemId));
+    if(cartData.length > 1) {
+      dispatch(removeItem(itemId));
+      toast.success("Item Removed")
+    }
+    else {
+      handleClearCart();
+    }
   };
 
   const handleClearCart = () => {
     dispatch(clearCart());
+    toast.success("Cart is Cleared");
+
   };
 
   const toggleIsDescExpanded = (id) => {
