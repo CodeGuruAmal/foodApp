@@ -38,7 +38,16 @@ const HomeContainer = () => {
 
   if (homeData.communication) {
     return <NoService />;
-  } else {
+  } 
+
+
+
+  
+  if (!homeData || !homeData.cards) {
+    return <div className="absolute top-24 text-3xl">Loading...</div>; // Show a loading message or spinner
+  }
+
+
     return (
       <div
         className={`md:w-[75%] w-full left-1/2 px-5 -translate-x-1/2 absolute top-24 ${
@@ -50,7 +59,6 @@ const HomeContainer = () => {
         <WithOnlineDelivery />
       </div>
     );
-  }
 };
 
 export default HomeContainer;
