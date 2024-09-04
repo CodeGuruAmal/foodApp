@@ -1,0 +1,61 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --primary-font-color: #2f2f2f;
+    --secondary-font-color: #FF5200;
+}
+
+
+
+
+
+@font-face {
+    font-family: "Gilroy-Bold";
+    src: url('../public/fonts/Gilroy/Gilroy-Bold-Rupee.woff2');
+}
+@font-face {
+    font-family: "Gilroy-ExtraBold";
+    src: url('../public/fonts/Gilroy/Gilroy-ExtraBold-Rupee.woff2');
+}
+@font-face {
+    font-family: "Gilroy-Medium";
+    src: url('../public/fonts/Gilroy/Gilroy-Medium-Rupee.woff2');
+}
+
+@font-face {
+    font-family: "Gilroy-Semibold";
+    src: url('../public/fonts/Gilroy/Gilroy-SemiBold-Rupee.woff2');
+}
+
+
+@font-face {
+    font-family: "ProximaNova";
+    src: url('../public/fonts/ProximaNova/ProximaNovaCond-Black.woff2');
+}
+
+
+
+/* Add this in your CSS file */
+.slider::-webkit-scrollbar {
+    height: 0px;
+  }
+  
+body {
+    color: var(--primary-font-color);
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-font-color);
+    border-radius: 8px;
+}
+
+.text-stroke-1 {
+    -webkit-text-stroke: 1px black;
+}
