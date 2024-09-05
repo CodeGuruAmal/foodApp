@@ -87,6 +87,7 @@ const Menu = () => {
           <IoSearch className="absolute right-2" />
         </div>
 
+
         <div className="menu relative">
           {menuData.map(
             (
@@ -126,6 +127,8 @@ const Menu = () => {
                     </button>
                   </div>
 
+
+
                   {carousel && (
                     <div className="slider flex my-4 w-full overflow-x-scroll gap-3 whitespace-nowrap">
                       {carousel.map((topPick, index) => {
@@ -138,7 +141,7 @@ const Menu = () => {
                             <img
                               src={`https://media-assets.swiggy.com/swiggy/image/upload/${imageId}`}
                               alt=""
-                              className="sm:min-w-60 min-w-48 sm:min-h-60 min-h-48 "
+                              className="sm:max-w-60 max-w-48 sm:max-h-60 max-h-48 "
                             />
 
                             <div className="flex absolute bottom-2 left-1/2 -translate-x-1/2 w-[90%] md:flex-row items-center flex-col justify-between">
