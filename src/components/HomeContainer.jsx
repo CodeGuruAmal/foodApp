@@ -27,6 +27,7 @@ const HomeContainer = () => {
   }, [coordinates]);
   
 
+
   if (homeData.communication) {
     return <NoService />;
   }

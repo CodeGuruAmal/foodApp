@@ -3,20 +3,18 @@ import { MdStars } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const RestaurantCard = (info) => {
-
-  const ctaLink = info?.link?.link
+  const ctaLink = info?.link?.link;
   const discountInfoHeader = info?.aggregatedDiscountInfoV3?.header;
   const discountInfoSubHeader = info?.aggregatedDiscountInfoV3?.subHeader;
   const restaurantImage = info?.cloudinaryImageId;
   const restaurantName = info?.name;
   const restaurantRating = info?.avgRating;
   const deliveryTime = info?.sla?.slaString;
-  
+
   const cuisines = info?.cuisines ? (info?.cuisines).join(", ") : "";
   const trimCuisines = cuisines ? cuisines.substring(0, 30) + "..." : [];
-  
+
   const place = info?.areaName;
-  
 
   return (
     <>
@@ -39,11 +37,13 @@ const RestaurantCard = (info) => {
           <div className="card-details text-sm scale-95 py-1">
             <h2 className="name font-[Gilroy-Bold] ">{restaurantName}</h2>
             <div className="flex -center gap-2">
-              <MdStars
-                className={` text-base ${
-                  restaurantRating > 2 ? "text-green-600" : "text-yellow-600"
-                }`}
-              />
+              {restaurantRating && (
+                <MdStars
+                  className={` text-base ${
+                    restaurantRating > 2 ? "text-green-600" : "text-yellow-600"
+                  }`}
+                />
+              )}
               <div>
                 <span className="rating font-[Gilroy-Medium]">
                   {restaurantRating} •{" "}
