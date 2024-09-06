@@ -33,9 +33,9 @@ const HomeContainer = () => {
     return <NoService />;
   }
 
-  if (!homeData || !homeData.cards) {
-    return <div className="absolute top-24 text-3xl">Loading...</div>; // Show a loading message or spinner
-  }
+  // if (!homeData || !homeData.cards) {
+  //   return <div className="absolute top-24 text-3xl">Loading...</div>; // Show a loading message or spinner
+  // }
 
   return (
     <div

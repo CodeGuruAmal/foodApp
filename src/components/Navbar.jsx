@@ -141,7 +141,7 @@ const Navbar = () => {
                           {cartData.length > 0
                             ? cartData.length < 100
                               ? cartData.length
-                              : 99
+                              : "99+"
                             : []}
                         </span>
                       )}
@@ -197,6 +197,9 @@ const Navbar = () => {
                       toggleLocationClick();
                     } else if (m.link === "Cart") {
                       toggleCartClick();
+                    }
+                    else if(m.link === "Search") {
+                      toggleMenuClick()
                     }
                   }}
                   className={`flex relative items-center gap-1 hover:text-secondaryFont px-4 py-2 `}

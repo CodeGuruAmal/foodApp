@@ -5,7 +5,12 @@ import { IoSearch } from "react-icons/io5";
 import { MdStars } from "react-icons/md";
 import { TbBasketStar } from "react-icons/tb";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { setAddedItem, setCartData, setIsDiffResMessage, setResInfo } from "../utils/cartSlice";
+import {
+  setAddedItem,
+  setCartData,
+  setIsDiffResMessage,
+  setResInfo,
+} from "../utils/cartSlice";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -63,19 +68,15 @@ const Menu = () => {
         dispatch(setResInfo(resData));
         toast.success("Item Added");
       } else {
-        dispatch(setIsDiffResMessage(true))
+        dispatch(setIsDiffResMessage(true));
       }
     } else {
       toast.error("Item Already Added");
     }
   };
 
-
-
   return (
     <>
-
-
       <div className="menus mt-8">
         <div className="flex pb-5 gap-2 items-center justify-center font-[Gilroy-Medium] tracking-[.2rem] text-neutral-600">
           <BiDish />
@@ -89,7 +90,6 @@ const Menu = () => {
           </button>
           <IoSearch className="absolute right-2" />
         </div>
-
 
         <div className="menu relative">
           {menuData.map(
@@ -130,12 +130,9 @@ const Menu = () => {
                     </button>
                   </div>
 
-
-
                   {carousel && (
                     <div className="slider flex my-4 w-full overflow-x-scroll gap-3 whitespace-nowrap">
                       {carousel.map((topPick, index) => {
-console.log(topPick)
 
                         const imageId = topPick?.creativeId;
                         const defaultPrice = topPick?.dish?.info?.defaultPrice;
@@ -157,9 +154,17 @@ console.log(topPick)
                                   : price / 100}
                               </span>
                               <button
+                                onClick={() =>
+                                  handleAddToCart(
+                                    topPick?.dish?.info,
+                                    detailsData
+                                  )
+                                }
                                 className={`bg-white text-green-600 hover:bg-neutral-100 text-[80%] w-full md:w-20 flex justify-center font-[Gilroy-ExtraBold] shadow-lg border scale-90 md:scale-100 border-neutral-400 px-6 py-1 rounded  `}
                               >
-                                ADD
+                                {addedItem.includes(topPick.dish.info.id)
+                                ? "ADDED"
+                                : "ADD"}
                               </button>
                             </div>
                           </div>
