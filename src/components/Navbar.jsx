@@ -89,7 +89,7 @@ const Navbar = () => {
   return (
     <>
       <div className="fixed p-3 z-[1000] w-full bg-white shadow-md shadow-zinc-200 text-xs font-[Gilroy-SemiBold] text-primaryFont">
-        <div className="xl:w-[70%] w-full px-3 mx-auto flex justify-between items-center">
+        <div className="lg:w-[75%] w-full px-3 mx-auto flex justify-between items-center">
           <div className="left-nav flex items-center gap-4">
             <Link to={"/"}>
               <div className="logo">
@@ -137,7 +137,7 @@ const Navbar = () => {
                     <span className="flex gap-1">
                       {iconMapping[m.link]} {m.link}{" "}
                       {m.link === "Cart" && (
-                        <span className="text-secondaryFont text-[.7rem] mt-[.11rem]">
+                        <span className="text-secondaryFont text-[.7rem] pl-1">
                           {cartData.length > 0
                             ? cartData.length < 100
                               ? cartData.length
@@ -152,10 +152,19 @@ const Navbar = () => {
             </nav>
           </div>
 
-          <TbMenu
-            onClick={toggleMenuClick}
-            className="cursor-pointer md:hidden block text-xl"
-          />
+          <div className="relative md:hidden">
+            <TbMenu
+              onClick={toggleMenuClick}
+              className="cursor-pointer md:hidden block text-2xl"
+            />
+            <span className={` ${cartData.length > 0 ? "flex" : "hidden"} md:hidden absolute -top-2 -right-3 h-5 w-5 text-white items-center justify-center bg-orange-500 rounded-full`}>
+              {cartData.length > 0
+                ? cartData.length < 100
+                  ? cartData.length
+                  : "99+"
+                : []}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -198,7 +207,7 @@ const Navbar = () => {
                       {cartData.length > 0
                         ? cartData.length < 100
                           ? cartData.length
-                          : 99
+                          : "99+"
                         : []}
                     </span>
                   )}
@@ -232,7 +241,7 @@ const Navbar = () => {
               type="text"
               onChange={handleLocationSearchTerm}
               value={locationSearchTerm}
-              className="border rounded-md w-full px-6 py-2 shadow-sm outline-none text-xs md:text-sm font-[Gilroy-Medium] "
+              className="border rounded-md w-full px-6 py-2 shadow-sm outline-none text-sm font-[Gilroy-Medium] "
               placeholder="Search for area, street name..."
             />
 

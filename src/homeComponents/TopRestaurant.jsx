@@ -58,9 +58,9 @@ const TopRestaurant = () => {
   
         <div className="slider flex gap-[.2rem] overflow-x-scroll scroll-smooth mt-5 pb-1">
           {restaurantDetails
-            ? restaurantDetails.map(({ info, cta: link }) => (
+            ? restaurantDetails.map(({ info }) => (
                 <div key={info.id} className="scale-90">
-                  <RestaurantCard {...info} link={link} />
+                  <RestaurantCard {...info} />
                 </div>
               ))
             : []}

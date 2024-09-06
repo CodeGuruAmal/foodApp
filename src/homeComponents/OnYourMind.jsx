@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { IoArrowForward, IoArrowBack } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const OnYourMind = () => {
   const homeData = useSelector((state) => state?.home?.homeData) || [];
@@ -28,13 +29,9 @@ const OnYourMind = () => {
     }
   }, [homeData]);
 
-
-
   return (
     <div>
-      {dataNotFound ? (
-        null
-      ) : (
+      {dataNotFound ? null : (
         <div className={`mb-8 border-b-2 `}>
           <div className="flex items-center justify-between">
             <h2 className="text-base md:text-lg font-[Gilroy-ExtraBold]">
@@ -56,15 +53,23 @@ const OnYourMind = () => {
           </div>
 
           <div className="slider flex gap-[.3rem] overflow-x-scroll scroll-smooth mt-5 pb-7">
-            {sliderImg.map((item, index) => (
-              <div key={index}>
-                <img
-                  className="md:min-w-24 min-w-20"
-                  src={`https://media-assets.swiggy.com/swiggy/image/upload/${item.imageId}`}
-                  alt=""
-                />
-              </div>
-            ))}
+            {sliderImg.map((item, index) => {
+              const url = item.action.link;
+              const collectionIdMatch = url.match(/collection_id=(.*?)&type=rcv2/);
+              const collectionId = collectionIdMatch ? collectionIdMatch[1] : null;
+
+              return (
+                <Link to={`/restaurants_by_food/${collectionId}`} key={index}>
+                  <div>
+                    <img
+                      className="md:min-w-24 min-w-20"
+                      src={`https://media-assets.swiggy.com/swiggy/image/upload/${item.imageId}`}
+                      alt=""
+                    />
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}

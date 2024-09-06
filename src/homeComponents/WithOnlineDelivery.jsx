@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import RestaurantCard from "./RestaurantCard";
 import { TbX } from "react-icons/tb";
+import { IoFilter } from "react-icons/io5";
 
 const WithOnlineDelivery = () => {
   const homeData = useSelector((state) => state?.home?.homeData);
@@ -10,6 +11,7 @@ const WithOnlineDelivery = () => {
   const [dataNotFound, setDataNotFound] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
+  const [filterBtnClick, setFilterBtnClick] = useState(false)
 
   const filterOptions = [
     "Fast Delivery",
@@ -44,7 +46,7 @@ const WithOnlineDelivery = () => {
     }
   }, [homeData]);
 
-  const handleFilterClick = (option) => {
+  const selectFilterOption = (option) => {
     if (selectedFilter.includes(option)) {
       const newFilters = selectedFilter.filter((item) => item !== option);
       setSelectedFilter(newFilters);
@@ -52,6 +54,11 @@ const WithOnlineDelivery = () => {
       setSelectedFilter((prev) => [...prev, option]);
     }
   };
+
+
+  const handleFilterBtnClick = () => {
+    setFilterBtnClick(!filterBtnClick);
+  }
 
   useEffect(() => {
     if (selectedFilter.length > 0) {
@@ -77,10 +84,12 @@ const WithOnlineDelivery = () => {
               );
 
             case "Less than Rs. 300":
-              return Number(item?.info?.costForTwo.replace(/[^0-9]/g, "")) < 300;
+              return (
+                Number(item?.info?.costForTwo.replace(/[^0-9]/g, "")) < 300
+              );
 
             default:
-              return true;
+              return restaurantDetails;
           }
         });
       });
@@ -101,12 +110,12 @@ const WithOnlineDelivery = () => {
             {headerTitle}
           </h2>
 
-          {/* ======================= Filter Section ======================= */}
-          <div className="flex gap-2 mt-5 mb-10">
+          {/* ----------------------------------------------- Filter Option Section ----------------------------------------------- */}
+          <div className="flex items-center gap-2 mt-5">
             {filterOptions.map((option, idx) => (
               <button
-                onClick={() => handleFilterClick(option)}
-                className={`flex items-center gap-1 text-xs font-[Gilroy-Semibold] shadow text-neutral-700 border border-neutral-300 rounded-full px-4 py-2 ${
+                onClick={() => selectFilterOption(option)}
+                className={`hidden items-center gap-1 text-xs whitespace-nowrap md:flex font-[Gilroy-Semibold] shadow text-neutral-700 border border-neutral-300 rounded-full px-4 py-2 ${
                   selectedFilter.includes(option)
                     ? "bg-neutral-200 border-neutral-700"
                     : "bg-white"
@@ -121,17 +130,47 @@ const WithOnlineDelivery = () => {
                 />
               </button>
             ))}
+
+            {/* ----------------------------------------------- Filter Button --------------------------------------------------------- */}
+
+            <div className="relative">
+              <button onClick={handleFilterBtnClick} className="block md:hidden shadow border border-neutral-300 rounded-full px-4 py-2">
+                <IoFilter />
+              </button>
+              <div className={`absolute p-4 rounded-xl ${filterBtnClick ? "flex" : "hidden"}  shadow flex-col gap-2 text-neutral-700 border border-neutral-300 bg-white z-50 top-10`}>
+                {filterOptions.map((option, idx) => (
+                  <button
+                    onClick={() => selectFilterOption(option)}
+                    className={`flex items-center justify-between text-xs whitespace-nowrap font-[Gilroy-Semibold] shadow text-neutral-700 border border-neutral-300 rounded-full px-4 py-2 ${
+                      selectedFilter.includes(option)
+                        ? "bg-neutral-200 border-neutral-700"
+                        : "bg-white"
+                    }`}
+                    key={idx}
+                  >
+                    <span>{option}</span>
+                    <TbX
+                      className={`${
+                        selectedFilter.includes(option) ? "block" : "hidden"
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* ======================= Restaurant Section ======================= */}
-          <div className="flex flex-wrap justify-center gap-[1.5rem] mt-6">
-            {filteredItems.length > 0
-              ? filteredItems.map(({ info, cta: link }, index) => (
-                  <div key={info.id || index}>
-                    <RestaurantCard {...info} link={link} />
-                  </div>
-                ))
-              : <p>No restaurants found matching the selected filters</p>}
+          {/* ----------------------------------------------- Restaurant Section ----------------------------------------------- */}
+          <div className="flex flex-wrap justify-center gap-[1.5rem] mt-7">
+            {filteredItems.length > 0 ? (
+              filteredItems.map(({ info }, index) => (
+                <div key={info.id || index}>
+                  <RestaurantCard {...info} />
+                </div>
+              ))
+            ) : (
+              <p>No restaurants found matching the selected filters</p>
+            )}
           </div>
         </div>
       )}

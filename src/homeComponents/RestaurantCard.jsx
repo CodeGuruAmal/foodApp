@@ -3,7 +3,7 @@ import { MdStars } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const RestaurantCard = (info) => {
-  const ctaLink = info?.link?.link;
+  const id = info.id
   const discountInfoHeader = info?.aggregatedDiscountInfoV3?.header;
   const discountInfoSubHeader = info?.aggregatedDiscountInfoV3?.subHeader;
   const restaurantImage = info?.cloudinaryImageId;
@@ -16,9 +16,11 @@ const RestaurantCard = (info) => {
 
   const place = info?.areaName;
 
+
+
   return (
     <>
-      <Link to={`/menu/${ctaLink.split("/").at(-1)}`}>
+      <Link to={`/menu/${id}`}>
         <div className="card duration-100 hover:scale-95 w-[12rem] md:w-[14rem] ">
           <div className="w-full h-[8.3rem] md:h-[10rem] overflow-hidden rounded-xl relative">
             <img

@@ -7,6 +7,7 @@ import { TbBasketStar } from "react-icons/tb";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { setAddedItem, setCartData, setIsDiffResMessage, setResInfo } from "../utils/cartSlice";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Menu = () => {
   const detailsData = useSelector((state) => state?.restaurant?.detailsData);
@@ -68,6 +69,8 @@ const Menu = () => {
       toast.error("Item Already Added");
     }
   };
+
+
 
   return (
     <>
@@ -132,6 +135,8 @@ const Menu = () => {
                   {carousel && (
                     <div className="slider flex my-4 w-full overflow-x-scroll gap-3 whitespace-nowrap">
                       {carousel.map((topPick, index) => {
+console.log(topPick)
+
                         const imageId = topPick?.creativeId;
                         const defaultPrice = topPick?.dish?.info?.defaultPrice;
                         const price = topPick?.dish?.info?.price;

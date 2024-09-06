@@ -23,51 +23,44 @@ const RestaurantMenu = () => {
   const isDiffResMessage = useSelector((state) => state.cart.isDiffResMessage);
   const dispatch = useDispatch();
 
+
   useEffect(() => {
-    axios
-      .get(
-        `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=${
-          coordinates?.geometry?.location?.lat
-            ? coordinates?.geometry?.location?.lat
-            : 19.0759837
-        }&lng=${
-          coordinates?.geometry?.location?.lng
-            ? coordinates?.geometry?.location?.lng
-            : 72.8776559
-        }&restaurantId=${id
-          .split("rest")
-          .at(-1)}&catalog_qa=undefined&submitAction=ENTER`
-      )
-      .then((res) => {
-        dispatch(setDetailsData(res?.data?.data?.cards[2]?.card?.card?.info));
-        dispatch(
-          setOffersData(
-            res?.data?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle
-              ?.offers
-          )
-        );
-        dispatch(
-          setMenuData(
-            res?.data?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.filter(
-              (data) =>
-                data?.card?.card?.categories ||
-                data?.card?.card?.itemCards ||
-                data?.card?.card?.carousel
+    if (coordinates?.geometry?.location?.lat && coordinates?.geometry?.location?.lng) {
+      axios
+        .get(
+          `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=${
+            coordinates?.geometry?.location?.lat
+          }&lng=${coordinates?.geometry?.location?.lng}&restaurantId=${id}&catalog_qa=undefined&submitAction=ENTER`
+        )
+        .then((res) => {
+          dispatch(setDetailsData(res?.data?.data?.cards[2]?.card?.card?.info));
+          dispatch(
+            setOffersData(
+              res?.data?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle
+                ?.offers
             )
-          )
-        );
-      })
-      .catch((err) => console.log(err));
+          );
+          dispatch(
+            setMenuData(
+              res?.data?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.filter(
+                (data) =>
+                  data?.card?.card?.categories ||
+                  data?.card?.card?.itemCards ||
+                  data?.card?.card?.carousel
+              )
+            )
+          );
+        })
+        .catch((err) => console.log(err));
+    }
   }, [
     coordinates?.geometry?.location?.lat,
     coordinates?.geometry?.location?.lng,
   ]);
 
-
   const handleClearCart = () => {
     dispatch(clearCart());
     toast.success("Cart is Cleared");
-
   };
 
   return (
@@ -112,7 +105,7 @@ const RestaurantMenu = () => {
       </div>
 
       <div
-        className={`md:w-[70%] lg:w-[47%] w-[95%]  left-1/2 -translate-x-1/2 absolute top-20 ${
+        className={`md:w-[75%] lg:w-[47%] w-[95%]  left-1/2 -translate-x-1/2 absolute top-20 ${
           cartClick || menuClick ? "max-h-[85vh] overflow-hidden" : ""
         } `}
       >

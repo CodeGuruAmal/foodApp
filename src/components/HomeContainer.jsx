@@ -25,6 +25,7 @@ const HomeContainer = () => {
         .catch((err) => console.log(err));
     }
   }, [coordinates]);
+
   
 
 
@@ -38,7 +39,7 @@ const HomeContainer = () => {
 
   return (
     <div
-      className={`md:w-[75%] w-full left-1/2 px-5 -translate-x-1/2 absolute top-24 ${
+      className={`lg:w-[75%] w-full left-1/2 px-5 -translate-x-1/2 absolute top-24 ${
         locationClick || menuClick || cartClick
           ? "max-h-[85vh] overflow-hidden"
           : ""
