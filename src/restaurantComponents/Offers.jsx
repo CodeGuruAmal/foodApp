@@ -26,7 +26,7 @@ const Offers = () => {
         </div>
       </div>
 
-      <div className="slider flex mt-4 w-full overflow-x-scroll gap-3 whitespace-nowrap">
+      <div className="h-slider flex mt-4 w-full overflow-x-scroll gap-3 whitespace-nowrap">
         {offersData.map(({ info }, index) => {
           const offerLogo = info?.offerLogo;
           const headerTitle = info?.header;

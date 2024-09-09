@@ -32,12 +32,18 @@ const RestaurantForFood = () => {
 
   const restaurantData = foodRestaurant.slice(3);
 
+  console.log(restaurantData, foodRestaurant)
+
   return (
     <div className="md:w-[75%] w-[95%]  left-1/2 -translate-x-1/2 absolute top-24">
       <h1 className="text-4xl font-[Gilroy-Bold] text-slate-900">{title}</h1>
-      <p className="text-sm font-[Gilroy-Medium] text-neutral-400">{description}</p>
+      <p className="text-sm font-[Gilroy-Medium] text-neutral-400">
+        {description}
+      </p>
 
-      <h3 className="text-xl mt-6 font-[Gilroy-ExtraBold]">Restaurants to explore</h3>
+      <h3 className="text-xl mt-6 font-[Gilroy-ExtraBold]">
+        Restaurants to explore
+      </h3>
 
       <div className="flex flex-wrap justify-center gap-[1.5rem] mt-8">
         {restaurantData.map(
@@ -50,7 +56,7 @@ const RestaurantForFood = () => {
             index
           ) => {
             return (
-              <div key={info.id || index}>
+              <div key={index}>
                 <RestaurantCard {...info} />
               </div>
             );

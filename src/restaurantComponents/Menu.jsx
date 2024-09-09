@@ -131,7 +131,7 @@ const Menu = () => {
                   </div>
 
                   {carousel && (
-                    <div className="slider flex my-4 w-full overflow-x-scroll gap-3 whitespace-nowrap">
+                    <div className="h-slider flex my-4 w-full overflow-x-scroll gap-3 whitespace-nowrap">
                       {carousel.map((topPick, index) => {
 
                         const imageId = topPick?.creativeId;

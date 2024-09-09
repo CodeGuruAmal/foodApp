@@ -3,8 +3,9 @@ import Navbar from "./components/Navbar";
 import { Route, Routes } from "react-router-dom";
 import HomeContainer from "./components/HomeContainer";
 import RestaurantMenu from "./components/RestaurantMenu";
-import SearchFood from "./components/SearchFood";
+import Search from "./components/Search";
 import RestaurantForFood from "./components/RestaurantForFood";
+import SearchResult from "./searchComponents/SearchResult";
 
 const App = () => {
   return (
@@ -13,8 +14,12 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomeContainer />} />
         <Route path="/menu/:id" element={<RestaurantMenu />} />
-        <Route path="/searchfood" element={<SearchFood />} />
-        <Route path="/restaurants_by_food/:id" element={<RestaurantForFood />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/search/:result" element={<SearchResult />} />
+        <Route
+          path="/restaurants_by_food/:id"
+          element={<RestaurantForFood />}
+        />
       </Routes>
     </div>
   );

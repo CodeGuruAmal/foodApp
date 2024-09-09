@@ -28,7 +28,7 @@ const WithOnlineDelivery = () => {
         (data) => data?.card?.card?.id === "popular_restaurants_title"
       );
       const detailsFinder = homeData?.cards.find(
-        (data) => data?.card?.card?.id === "restaurant_grid_listing"
+        (data) => data?.card?.card?.id === "top_brands_for_you"
       );
 
       if (titleFinder || detailsFinder) {
@@ -164,7 +164,7 @@ const WithOnlineDelivery = () => {
           <div className="flex flex-wrap justify-center gap-[1.5rem] mt-7">
             {filteredItems.length > 0 ? (
               filteredItems.map(({ info }, index) => (
-                <div key={info.id || index}>
+                <div key={ index}>
                   <RestaurantCard {...info} />
                 </div>
               ))

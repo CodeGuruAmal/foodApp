@@ -1,11 +1,10 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
     --primary-font-color: #1e1e1e;
-    --secondary-font-color: #FF5200;
+    --secondary-font-color: #ff793b;
 }
 
 
@@ -16,10 +15,12 @@
     font-family: "Gilroy-Bold";
     src: url('../public/fonts/Gilroy/Gilroy-Bold-Rupee.woff2');
 }
+
 @font-face {
     font-family: "Gilroy-ExtraBold";
     src: url('../public/fonts/Gilroy/Gilroy-ExtraBold-Rupee.woff2');
 }
+
 @font-face {
     font-family: "Gilroy-Medium";
     src: url('../public/fonts/Gilroy/Gilroy-Medium-Rupee.woff2');
@@ -39,10 +40,14 @@
 
 
 /* Add this in your CSS file */
-.slider::-webkit-scrollbar {
+.h-slider::-webkit-scrollbar {
     height: 0px;
-  }
-  
+}
+
+.v-slider::-webkit-scrollbar {
+    width: 0px;
+}
+
 body {
     color: var(--primary-font-color);
 }

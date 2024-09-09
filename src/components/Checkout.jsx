@@ -211,7 +211,7 @@ const Checkout = () => {
         </h2>
         <div className="w-full border-b border-neutral-400 pb-4 mb-4 flex flex-col gap-2 text-sm text-neutral-600 mt-5 font-[Gilroy-Semibold]">
           <div className="flex items-center justify-between">
-            <span>Subtotal:</span> <span>₹{subTotal}</span>
+            <span>Subtotal:</span> <span>₹{parseFloat(subTotal.toFixed(2))}</span>
           </div>
           <div className="flex items-center justify-between">
             <span>Deliveryfee:</span> <span>₹{deliveryFee}</span>
@@ -220,7 +220,7 @@ const Checkout = () => {
 
         <div className="text-xl font-[Gilroy-Bold] flex items-center justify-between">
           <span>Total:</span>
-          <span>₹{total}</span>
+          <span>₹{parseFloat(total.toFixed(2))}</span>
         </div>
       </div>
     </div>

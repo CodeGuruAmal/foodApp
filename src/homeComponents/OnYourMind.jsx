@@ -52,7 +52,7 @@ const OnYourMind = () => {
             </div>
           </div>
 
-          <div className="slider flex gap-[.3rem] overflow-x-scroll scroll-smooth mt-5 pb-7">
+          <div className="h-slider flex gap-[.3rem] overflow-x-scroll scroll-smooth mt-5 pb-7">
             {sliderImg.map((item, index) => {
               const url = item.action.link;
               const collectionIdMatch = url.match(/collection_id=(.*?)&type=rcv2/);

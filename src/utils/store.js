@@ -4,6 +4,7 @@ import homeSlice from "./homeSlice";
 import restaurantSlice from "./restaurantSlice";
 import locationSlice from "./locationSlice";
 import cartSlice from "./cartSlice";
+import searchSlice from "./searchSlice";
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
         nav: navSlice,
         restaurant: restaurantSlice,
         location: locationSlice,
-        cart: cartSlice
+        cart: cartSlice,
+        search: searchSlice
 
     }
 })

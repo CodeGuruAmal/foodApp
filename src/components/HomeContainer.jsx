@@ -5,6 +5,7 @@ import WithOnlineDelivery from "../homeComponents/WithOnlineDelivery";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setHomeData } from "../utils/homeSlice";
+import { setCoordinates } from "../utils/locationSlice"; // Import the setCoordinates action
 import NoService from "./NoService";
 
 const HomeContainer = () => {
@@ -15,6 +16,7 @@ const HomeContainer = () => {
   const coordinates = useSelector((state) => state.location.coordinates);
   const dispatch = useDispatch();
 
+
   useEffect(() => {
     if (coordinates?.geometry?.location) {
       axios
@@ -24,18 +26,11 @@ const HomeContainer = () => {
         .then((res) => dispatch(setHomeData(res?.data?.data)))
         .catch((err) => console.log(err));
     }
-  }, [coordinates]);
-
-  
-
+  }, [coordinates, dispatch]);
 
   if (homeData.communication) {
     return <NoService />;
   }
-
-  // if (!homeData || !homeData.cards) {
-  //   return <div className="absolute top-24 text-3xl">Loading...</div>; // Show a loading message or spinner
-  // }
 
   return (
     <div

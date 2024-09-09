@@ -56,7 +56,7 @@ const TopRestaurant = () => {
           </div>
         </div>
   
-        <div className="slider flex gap-[.2rem] overflow-x-scroll scroll-smooth mt-5 pb-1">
+        <div className="h-slider flex gap-[.2rem] overflow-x-scroll scroll-smooth mt-5 pb-1">
           {restaurantDetails
             ? restaurantDetails.map(({ info }) => (
                 <div key={info.id} className="scale-90">

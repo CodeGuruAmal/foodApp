@@ -24,7 +24,7 @@ const RestaurantCard = (info) => {
         <div className="card duration-100 hover:scale-95 w-[12rem] md:w-[14rem] ">
           <div className="w-full h-[8.3rem] md:h-[10rem] overflow-hidden rounded-xl relative">
             <img
-              src={`https://media-assets.swiggy.com/swiggy/image/upload/${restaurantImage}`}
+              src={`https://media-assets.swiggy.com/swiggy/image/upload//fl_lossy,f_auto,q_auto,w_660/${restaurantImage}`}
               className="object-center w-full h-full object-cover"
               alt=""
             />

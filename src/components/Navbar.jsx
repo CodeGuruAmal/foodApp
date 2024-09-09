@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { IoSearch, IoLocationOutline } from "react-icons/io5";
 import { FiUser } from "react-icons/fi";
 import { TbMenu, TbX, TbCurrentLocation } from "react-icons/tb";
@@ -22,14 +22,14 @@ import Checkout from "./Checkout";
 const Navbar = () => {
   const iconMapping = {
     Search: <IoSearch className="md:text-sm text-xl " />,
-    Location: <TbCurrentLocation className="md:text-sm text-xl " />,
+    Locate: <TbCurrentLocation className="md:text-sm text-xl " />,
     Cart: <BsBag className="md:text-sm text-xl " />,
     SignUp: <FiUser className="md:text-sm text-xl " />,
   };
 
   const [menuLink] = useState([
-    { link: "Search", path: "/searchfood" },
-    { link: "Location", path: "/" },
+    { link: "Search", path: "/search" },
+    { link: "Locate"},
     { link: "Cart" },
     { link: "SignUp", path: "/" },
   ]);
@@ -43,7 +43,9 @@ const Navbar = () => {
   const locationData = useSelector((state) => state.location.locationData);
   const placeId = useSelector((state) => state.location.placeId);
   const cartData = useSelector((state) => state.cart.cartData);
+  const coordinates = useSelector((state) => state.location.coordinates);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -86,6 +88,12 @@ const Navbar = () => {
     dispatch(setPlaceId(id));
   };
 
+
+  const placeName = coordinates?.formatted_address
+  ? coordinates?.formatted_address
+  : "";
+const trimPlaceName = placeName ? placeName.substring(0, 35) + "..." : [];
+
   return (
     <>
       <div className="fixed p-3 z-[1000] w-full bg-white shadow-md shadow-zinc-200 text-xs font-[Gilroy-SemiBold] text-primaryFont">
@@ -116,6 +124,15 @@ const Navbar = () => {
                 </svg>
               </div>
             </Link>
+            {placeName.length > 35 ? (
+                <span className="text-[.65rem] text-neutral-500 font-[Gilroy-Medium] tracking-wide">
+                  {trimPlaceName}
+                </span>
+              ) : (
+                <span className="text-[.65rem] text-neutral-500 font-[Gilroy-Medium] tracking-wide">
+                  {coordinates.formatted_address}
+                </span>
+              )}
           </div>
 
           <div className="right-nav md:flex text-xs items-center hidden">
@@ -126,7 +143,7 @@ const Navbar = () => {
                     to={m.path}
                     key={index}
                     onClick={() => {
-                      if (m.link === "Location") {
+                      if (m.link === "Locate") {
                         toggleLocationClick();
                       } else if (m.link === "Cart") {
                         toggleCartClick();
@@ -157,7 +174,7 @@ const Navbar = () => {
               onClick={toggleMenuClick}
               className="cursor-pointer md:hidden block text-2xl"
             />
-            <span className={` ${cartData.length > 0 ? "flex" : "hidden"} md:hidden absolute -top-2 -right-3 h-5 w-5 text-white items-center justify-center bg-orange-500 rounded-full`}>
+            <span className={` ${cartData.length > 0 ? "flex" : "hidden"} md:hidden absolute -top-3 -right-4 h-6 w-6 text-white items-center justify-center bg-orange-500 rounded-full`}>
               {cartData.length > 0
                 ? cartData.length < 100
                   ? cartData.length
@@ -193,7 +210,7 @@ const Navbar = () => {
                   key={index}
                   to={m.path}
                   onClick={() => {
-                    if (m.link === "Location") {
+                    if (m.link === "Locate") {
                       toggleLocationClick();
                     } else if (m.link === "Cart") {
                       toggleCartClick();
@@ -269,6 +286,7 @@ const Navbar = () => {
                         handlePlaceId(data.place_id);
                         dispatch(setLocationClick(false));
                         dispatch(setMenuClick(false));
+                        navigate("/");
                       }}
                       className={`py-4 flex w-full items-center gap-2 cursor-pointer ${
                         isLastItem ? "" : "border-b-2 border-dashed"
