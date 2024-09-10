@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 const Checkout = () => {
   const cartData = useSelector((state) => state?.cart?.cartData);
   const addedItem = useSelector((state) => state?.cart?.addedItem);
-  const detailsData = useSelector((state) => state.restaurant.detailsData);
+  const resInfo = useSelector((state) => state.cart.resInfo);
 
   const dispatch = useDispatch();
 
@@ -53,7 +53,7 @@ const Checkout = () => {
     0
   );
 
-  const deliveryFee = detailsData?.feeDetails?.totalFee ? detailsData.feeDetails?.totalFee/100 : 0;
+  const deliveryFee = resInfo?.feeDetails?.totalFee ? resInfo.feeDetails?.totalFee/100 : 0;
 
   const total = subTotal + deliveryFee;
 
@@ -109,9 +109,9 @@ const Checkout = () => {
       </button>
 
       <div className="mt-14">
-        <h1 className="text-2xl font-[Gilroy-ExtraBold]">{detailsData.name}</h1>
+        <h1 className="text-2xl font-[Gilroy-ExtraBold]">{resInfo.name}</h1>
         <span className="text-xs font-[Gilroy-Semibold] text-neutral-400">
-          {detailsData.areaName}
+          {resInfo.areaName}
         </span>
       </div>
 

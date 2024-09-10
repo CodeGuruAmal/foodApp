@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { IoArrowBack } from "react-icons/io5";
 import axios from "axios";
+import { IoArrowBack } from "react-icons/io5";
+import Dishes from "./Dishes";
+import { clearCart, setIsDiffResMessage } from "../utils/cartSlice";
+import toast from "react-hot-toast";
 
 const SearchResult = () => {
   const { result } = useParams();
   const navigate = useNavigate();
   const metaData = useSelector((state) => state.search.metaData);
   const coordinates = useSelector((state) => state.location.coordinates);
+  const isDiffResMessage = useSelector(
+    (state) => state?.cart?.isDiffResMessage
+  );
   const [restaurantData, setRestaurantData] = useState([]);
   const [dishData, setDishData] = useState([]);
+  const [moreDetail, setMoreDetail] = useState();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (
@@ -46,53 +54,104 @@ const SearchResult = () => {
     }
   }, [coordinates]);
 
-  return (
-    <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[95%] md:w-[80%] lg:w-[55%] flex flex-col items-center gap-3 h-[91vh]">
-      <div className="w-full py-2">
-        <button className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 p-2 rounded-xl">
-          <IoArrowBack onClick={() => navigate(-1)} />
-        </button>
+  const handleClearCart = () => {
+    dispatch(clearCart());
+    toast.success("Cart is Cleared");
+  };
 
-        <div className="font-[Gilroy-semibold] mt-4">
-          <div className="categoryBtn flex gap-3 text-xs ">
-            <button className="px-3 py-1 bg-secondaryFont border border-secondaryFont rounded-full">
-              Restaurants
+  const handleMoreDetail = (detail) => {
+    setMoreDetail(detail)
+  }
+
+
+  console.log(moreDetail)
+
+  return (
+    <div className="w-full h-screen">
+
+
+      <div 
+      onClick={() => setMoreDetail()}
+      className={`absolute z-[10001] w-full h-full ${moreDetail ? "block" : "hidden"}`}>
+        <div className=" w-full h-full bg-neutral-900 opacity-50"></div>
+        <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-[25%] h-[65%] bg-red-500"></div>
+      </div>
+
+
+      <div
+        className={`h-full w-full fixed top-0 left-0 z-[10001] ${
+          isDiffResMessage ? "block" : "hidden"
+        }`}
+      >
+        <div
+          onClick={() => dispatch(setIsDiffResMessage(false))}
+          className="h-full w-full bg-neutral-900 opacity-50"
+        ></div>
+        <div
+          className={`h-40 w-96 bg-neutral-100 absolute left-1/2 -translate-x-1/2 duration-300 px-4 py-5 ease-in-out flex flex-col gap-3 ${
+            isDiffResMessage ? "bottom-5" : "-bottom-32"
+          }`}
+        >
+          <h1 className="text-xl font-[Gilroy-Bold]">Items already in cart</h1>
+          <p className="text-[.75rem] font-[Gilroy-Medium]">
+            Your cart contains items from other restaurant. Would you like to
+            reset your cart for adding items from this restaurant?
+          </p>
+          <div className="flex justify-between gap-2 font-[Gilroy-Semibold]">
+            <button
+              className="border-2 w-full px-4 py-2 text-sm border-green-500 text-green-500"
+              onClick={() => dispatch(setIsDiffResMessage(false))}
+            >
+              NO
             </button>
-            <button className="border border-secondaryFont px-3 py-1 rounded-full">
-              Dishes
+            <button
+              className=" bg-green-500 w-full px-4 py-2 text-sm text-white"
+              onClick={() => {
+                handleClearCart();
+                dispatch(setIsDiffResMessage(false));
+              }}
+            >
+              YES, START AFRESH
             </button>
           </div>
         </div>
       </div>
-      <div className="v-slider w-full h-full overflow-scroll bg-neutral-100 px-2 pt-7 pb-2 shadow-inner">
-        <div className="restaurant-section"></div>
-        <div className="dish-section ">
-          <div className="flex flex-wrap w-[95%] px-2 gap-3 mx-auto pt-8">
+
+      <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[95%] md:w-[45rem] lg:w-[50rem] flex flex-col items-center gap-3 h-[90vh]">
+        <div className="w-full py-2 flex sm:flex-col gap-4 sm:items-start items-center justify-between">
+          <button className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 p-2 rounded-xl">
+            <IoArrowBack onClick={() => navigate(-1)} />
+          </button>
+
+          <div className="font-[Gilroy-semibold]">
+            <div className="categoryBtn flex gap-3 text-xs ">
+              <button className="px-3 py-1 bg-neutral-100 shadow-sm border border-neutral-200 rounded-full">
+                Restaurants
+              </button>
+              <button className="border border-neutral-200 shadow-sm px-3 py-1 rounded-full">
+                Dishes
+              </button>
+            </div>
+          </div>
+        </div>
+        {/* <h1 className="text-3xl">Hello</h1> */}
+        <div className="w-full h-full overflow-scroll bg-neutral-100 font-[Gilroy-Medium] px-2 pt-5 pb-2 shadow-inner">
+          <div className="restaurants"></div>
+          <div className="dishes relative w-[95%] mx-auto flex flex-wrap justify-between gap-3 h-full ">
             {dishData.map(({ card: { card } }) => {
-              // console.log(card);
               return (
                 <div
                   key={card?.info?.id}
-                  className="w-full sm:w-[48%] h-60 p-3 rounded-2xl bg-white border shadow-md"
+                  className="sm:w-[48%] w-full h-60 bg-white shadow-md border rounded-2xl overflow-hidden"
                 >
-                  <div className="top w-full h-14 bg-red-500">
-                    <div className="left">
-                      <span className="text-xs text-neutral-400">
-                        By {card?.restaurant?.info?.name}
-                      </span>
-                    </div>
-                    <div className="right"></div>
-                  </div>
-                  <div className="bottom">
-                    <div className="left"></div>
-                    <div className="right"></div>
-                  </div>
+                  <Dishes card={card} handleMoreDetail={handleMoreDetail}/>
                 </div>
               );
             })}
           </div>
         </div>
       </div>
+      
     </div>
   );
 };

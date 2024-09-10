@@ -29,7 +29,7 @@ const Navbar = () => {
 
   const [menuLink] = useState([
     { link: "Search", path: "/search" },
-    { link: "Locate"},
+    { link: "Locate" },
     { link: "Cart" },
     { link: "SignUp", path: "/" },
   ]);
@@ -88,11 +88,10 @@ const Navbar = () => {
     dispatch(setPlaceId(id));
   };
 
-
   const placeName = coordinates?.formatted_address
-  ? coordinates?.formatted_address
-  : "";
-const trimPlaceName = placeName ? placeName.substring(0, 35) + "..." : [];
+    ? coordinates?.formatted_address
+    : "";
+  const trimPlaceName = placeName ? placeName.substring(0, 35) + "..." : [];
 
   return (
     <>
@@ -125,14 +124,14 @@ const trimPlaceName = placeName ? placeName.substring(0, 35) + "..." : [];
               </div>
             </Link>
             {placeName.length > 35 ? (
-                <span className="text-[.65rem] text-neutral-500 font-[Gilroy-Medium] tracking-wide">
-                  {trimPlaceName}
-                </span>
-              ) : (
-                <span className="text-[.65rem] text-neutral-500 font-[Gilroy-Medium] tracking-wide">
-                  {coordinates.formatted_address}
-                </span>
-              )}
+              <span className="text-[.65rem] text-neutral-500 font-[Gilroy-Medium] tracking-wide">
+                {trimPlaceName}
+              </span>
+            ) : (
+              <span className="text-[.65rem] text-neutral-500 font-[Gilroy-Medium] tracking-wide">
+                {coordinates.formatted_address}
+              </span>
+            )}
           </div>
 
           <div className="right-nav md:flex text-xs items-center hidden">
@@ -174,7 +173,11 @@ const trimPlaceName = placeName ? placeName.substring(0, 35) + "..." : [];
               onClick={toggleMenuClick}
               className="cursor-pointer md:hidden block text-2xl"
             />
-            <span className={` ${cartData.length > 0 ? "flex" : "hidden"} md:hidden absolute -top-3 -right-4 h-6 w-6 text-white items-center justify-center bg-orange-500 rounded-full`}>
+            <span
+              className={` ${
+                cartData.length > 0 ? "flex" : "hidden"
+              } md:hidden absolute -top-3 -right-4 h-6 w-6 text-white items-center justify-center bg-orange-500 rounded-full`}
+            >
               {cartData.length > 0
                 ? cartData.length < 100
                   ? cartData.length
@@ -185,7 +188,7 @@ const trimPlaceName = placeName ? placeName.substring(0, 35) + "..." : [];
         </div>
       </div>
 
-      <div className="h-screen relative md:hidden">
+      <div className="h-screen absolute">
         <div
           onClick={toggleMenuClick}
           className={`w-full h-full z-[1000] bg-neutral-900 opacity-50 fixed top-0 left-0 ${
@@ -214,9 +217,8 @@ const trimPlaceName = placeName ? placeName.substring(0, 35) + "..." : [];
                       toggleLocationClick();
                     } else if (m.link === "Cart") {
                       toggleCartClick();
-                    }
-                    else if(m.link === "Search") {
-                      toggleMenuClick()
+                    } else if (m.link === "Search") {
+                      toggleMenuClick();
                     }
                   }}
                   className={`flex relative items-center gap-1 hover:text-secondaryFont px-4 py-2 `}

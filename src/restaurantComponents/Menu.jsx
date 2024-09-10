@@ -175,6 +175,8 @@ const Menu = () => {
 
                   {itemCards &&
                     itemCards.map(({ card: info }, itemIndex) => {
+
+                      // console.log(info.info)
                       const foodClassifiers =
                         info.info.itemAttribute.vegClassifier;
                       const ribbonText = info.info.ribbon.text;
@@ -266,10 +268,8 @@ const Menu = () => {
 
                           <div className="relative">
                             <img
-                              className={`md:w-32 w-24 md:h-32 h-24 object-cover rounded-lg  ${
-                                imageId ? "visible" : "invisible"
-                              }`}
-                              src={`https://media-assets.swiggy.com/swiggy/image/upload/${imageId}`}
+                              className={`md:w-32 w-24 md:h-32 h-24 object-cover rounded-lg`}
+                              src={imageId ? `https://media-assets.swiggy.com/swiggy/image/upload/${imageId}` : "../../public/img/alt.jpg"}
                               alt=""
                             />
 
@@ -277,9 +277,7 @@ const Menu = () => {
                               onClick={() =>
                                 handleAddToCart(info.info, detailsData)
                               }
-                              className={`bg-white hover:bg-neutral-100 text-green-600 font-[Gilroy-ExtraBold] absolute  shadow-lg border scale-90 md:scale-100 border-neutral-400 px-6 py-1 rounded left-1/2 -translate-x-1/2 ${
-                                imageId ? "-bottom-3" : "top-1/2"
-                              }`}
+                              className={`bg-white hover:bg-neutral-100 text-green-600 font-[Gilroy-ExtraBold] absolute -bottom-3 shadow-lg border scale-90 md:scale-100 border-neutral-400 px-6 py-1 rounded left-1/2 -translate-x-1/2 `}
                             >
                               {addedItem.includes(info.info.id)
                                 ? "ADDED"
@@ -414,19 +412,15 @@ const Menu = () => {
                                 </div>
                                 <div className=" h-full p-2 relative ">
                                   <img
-                                    className={`w-32 h-32 mx-auto object-cover rounded-lg ${
-                                      imageId ? "visible" : "invisible"
-                                    }`}
-                                    src={`https://media-assets.swiggy.com/swiggy/image/upload/${imageId}`}
+                                    className={`w-32 h-32 mx-auto object-cover rounded-lg`}
+                                    src={imageId ? `https://media-assets.swiggy.com/swiggy/image/upload/${imageId}` : "../../public/img/alt.jpg"}
                                     alt=""
                                   />
                                   <button
                                     onClick={() =>
                                       handleAddToCart(card.info, detailsData)
                                     }
-                                    className={`bg-white hover:bg-neutral-100 text-green-600 font-[Gilroy-ExtraBold] absolute shadow-lg border scale-90 md:scale-100 border-neutral-400 px-6 py-1 rounded left-1/2 -translate-x-1/2 ${
-                                      imageId ? "-bottom-1" : "top-1/2"
-                                    }`}
+                                    className={`bg-white hover:bg-neutral-100 text-green-600 font-[Gilroy-ExtraBold] absolute shadow-lg border scale-90 md:scale-100 border-neutral-400 px-6 py-1 rounded left-1/2 -translate-x-1/2 -bottom-1`}
                                   >
                                     {addedItem.includes(card.info.id)
                                       ? "ADDED"

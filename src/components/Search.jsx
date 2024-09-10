@@ -86,8 +86,7 @@ const Search = () => {
 
       index % 2 == 1 ? (
         <span key={index} className="font-[Gilroy-Bold] text-black">
-          {" "}
-          {text}{" "}
+          {text}
         </span>
       ) : (
         text
@@ -165,14 +164,14 @@ const Search = () => {
                 />
               </div>
 
-             <div className="">
-               <h1 className="text-sm text-neutral-800 font-[Gilroy-Medium]">
-                {renderHighlightedText(item.highlightedText)}
-              </h1>
-              <span className="text-xs text-neutral-500">
-                {item?.tagToDisplay}
-              </span>
-             </div>
+              <div className="">
+                <h1 className="text-sm text-neutral-800 font-[Gilroy-Medium]">
+                  {renderHighlightedText(item.highlightedText)}
+                </h1>
+                <span className="text-xs text-neutral-500">
+                  {item?.tagToDisplay}
+                </span>
+              </div>
             </div>
           );
         })}
