@@ -21,6 +21,8 @@ const WithOnlineDelivery = () => {
     "Rs. 300-Rs. 600",
     "Less than Rs. 300",
   ];
+  
+  // console.log(homeData)
 
   useEffect(() => {
     if (homeData?.cards?.length > 0) {
@@ -28,15 +30,15 @@ const WithOnlineDelivery = () => {
         (data) => data?.card?.card?.id === "popular_restaurants_title"
       );
       const detailsFinder = homeData?.cards.find(
-        (data) => data?.card?.card?.id === "top_brands_for_you"
+        (data) => data?.card?.card?.id === "restaurant_grid_listing"
       );
 
       if (titleFinder || detailsFinder) {
-        const title = titleFinder.card.card.title;
+        const title = titleFinder?.card?.card?.title;
         setHeaderTitle(title);
 
         const details =
-          detailsFinder.card?.card?.gridElements?.infoWithStyle?.restaurants;
+          detailsFinder?.card?.card?.gridElements?.infoWithStyle?.restaurants;
         setRestaurantDetails(details);
         setFilteredItems(details); // Initially set filtered items to all restaurants
         setDataNotFound(false);
@@ -100,6 +102,8 @@ const WithOnlineDelivery = () => {
     }
   }, [selectedFilter, restaurantDetails]);
 
+  console.log(filteredItems)
+
   return (
     <div>
       {dataNotFound ? (
@@ -162,7 +166,7 @@ const WithOnlineDelivery = () => {
 
           {/* ----------------------------------------------- Restaurant Section ----------------------------------------------- */}
           <div className="flex flex-wrap justify-center gap-[1.5rem] mt-7">
-            {filteredItems.length > 0 ? (
+            {filteredItems && filteredItems.length > 0 ? (
               filteredItems.map(({ info }, index) => (
                 <div key={ index}>
                   <RestaurantCard {...info} />

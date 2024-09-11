@@ -18,7 +18,7 @@ const Details = () => {
 
   return (
     <div className="details mt-9">
-      <h2 className="text-base md:text-xl font-[Gilroy-ExtraBold]">
+      <h2 className="text-2xl md:text-xl font-[Gilroy-ExtraBold]">
         {restaurantName}
       </h2>
 
@@ -53,9 +53,9 @@ const Details = () => {
             </div>
           </div>
 
-          <div className="mt-1 flex gap-2 items-center font-[Gilroy-Bold] text-neutral-500">
+          <div className="mt-1 flex gap-2 items-center text-[.65rem] font-[Gilroy-Bold] text-neutral-500">
             <IoBicycleSharp className="text-lg" />
-            {miles}{" "}
+            <span className="">{miles}{" "}</span>
             <span className="font-[Gilroy-Medium]">
               {feeDetails ? "| " + feeDetails.split(" | ").at(-1) : []}
             </span>

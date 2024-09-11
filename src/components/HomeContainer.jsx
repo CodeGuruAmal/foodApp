@@ -16,7 +16,6 @@ const HomeContainer = () => {
   const coordinates = useSelector((state) => state.location.coordinates);
   const dispatch = useDispatch();
 
-
   useEffect(() => {
     if (coordinates?.geometry?.location) {
       axios
@@ -27,6 +26,17 @@ const HomeContainer = () => {
         .catch((err) => console.log(err));
     }
   }, [coordinates, dispatch]);
+
+  // useEffect(() => {
+  //   if (coordinates?.geometry?.location) {
+  //   axios
+  //     .get(
+  //       `https://www.swiggy.com/mapi/restaurants/list/v5?offset=0&is-seo-homepage-enabled=true&lat=${coordinates.geometry.location.lat}&lng=${coordinates.geometry.location.lng}&carousel=true&third_party_vendor=1`
+  //     )
+  //     .then((res) => console.log(res))
+  //     .catch((err) => console.log(err));
+  //   }
+  // }, [coordinates]);
 
   if (homeData.communication) {
     return <NoService />;

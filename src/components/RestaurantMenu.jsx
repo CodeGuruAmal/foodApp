@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   setDetailsData,
   setMenuData,
@@ -10,8 +10,9 @@ import {
 import Details from "../restaurantComponents/Details";
 import Offers from "../restaurantComponents/Offers";
 import Menu from "../restaurantComponents/Menu";
-import { clearCart, setIsDiffResMessage } from "../utils/cartSlice";
-import toast from "react-hot-toast";
+import CartRefresher from "../CartComponents/CartRefresher";
+import { IoArrowBack } from "react-icons/io5";
+
 
 const RestaurantMenu = () => {
   const { id } = useParams();
@@ -20,8 +21,8 @@ const RestaurantMenu = () => {
   const coordinates = useSelector((state) => state.location.coordinates);
   const cartClick = useSelector((state) => state.nav.cartClick);
   const menuClick = useSelector((state) => state.nav.menuClick);
-  const isDiffResMessage = useSelector((state) => state.cart.isDiffResMessage);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -40,9 +41,12 @@ const RestaurantMenu = () => {
                 ?.offers
             )
           );
+          
+          // console.log(menuResult)
+          let menuResult = res?.data?.data?.cards.filter((item) => item.groupedCard)
           dispatch(
             setMenuData(
-              res?.data?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.filter(
+              menuResult[0]?.groupedCard.cardGroupMap?.REGULAR?.cards?.filter(
                 (data) =>
                   data?.card?.card?.categories ||
                   data?.card?.card?.itemCards ||
@@ -58,51 +62,11 @@ const RestaurantMenu = () => {
     coordinates?.geometry?.location?.lng,
   ]);
 
-  const handleClearCart = () => {
-    dispatch(clearCart());
-    toast.success("Cart is Cleared");
-  };
+
 
   return (
     <>
-      <div
-        className={`h-screen w-full fixed top-0 left-0 z-[10001] ${
-          isDiffResMessage ? "block" : "hidden"
-        }`}
-      >
-        <div
-          onClick={() => dispatch(setIsDiffResMessage(false))}
-          className="h-full w-full bg-neutral-900 opacity-50"
-        ></div>
-        <div
-          className={`h-40 w-96 bg-neutral-100 absolute left-1/2 -translate-x-1/2 duration-300 px-4 py-5 ease-in-out flex flex-col gap-3 ${
-            isDiffResMessage ? "bottom-5" : "-bottom-32"
-          }`}
-        >
-          <h1 className="text-xl font-[Gilroy-Bold]">Items already in cart</h1>
-          <p className="text-[.75rem] font-[Gilroy-Medium]">
-            Your cart contains items from other restaurant. Would you like to
-            reset your cart for adding items from this restaurant?
-          </p>
-          <div className="flex justify-between gap-2 font-[Gilroy-Semibold]">
-            <button
-              className="border-2 w-full px-4 py-2 text-sm border-green-500 text-green-500"
-              onClick={() => dispatch(setIsDiffResMessage(false))}
-            >
-              NO
-            </button>
-            <button
-              className=" bg-green-500 w-full px-4 py-2 text-sm text-white"
-              onClick={() => {
-                handleClearCart();
-                dispatch(setIsDiffResMessage(false));
-              }}
-            >
-              YES, START AFRESH
-            </button>
-          </div>
-        </div>
-      </div>
+<CartRefresher />
 
       <div
         className={`md:w-[75%] lg:w-[47%] w-[95%]  left-1/2 -translate-x-1/2 absolute top-20 ${
@@ -113,6 +77,10 @@ const RestaurantMenu = () => {
           <Link to={"/"}>Home</Link> / <span>{detailsData?.city}</span> /{" "}
           <span className="text-neutral-600">{detailsData?.name}</span>
         </div>
+
+        <button className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 p-2 rounded-xl">
+            <IoArrowBack onClick={() => navigate(-1)} />
+          </button>
 
         <Details />
         <Offers />

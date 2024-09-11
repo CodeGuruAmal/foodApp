@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { IoStar, IoArrowForward } from "react-icons/io5";
+import { BiFoodTag } from "react-icons/bi";
 import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,10 +12,11 @@ import {
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 const Dishes = ({ card, handleMoreDetail }) => {
+  // console.log(card);
+
   const resInfo = useSelector((state) => state?.cart?.resInfo);
   const cartData = useSelector((state) => state?.cart?.cartData);
   const addedItem = useSelector((state) => state?.cart?.addedItem);
-
   const dispatch = useDispatch();
 
   const handleAddToCart = (data, resData) => {
@@ -57,25 +59,33 @@ const Dishes = ({ card, handleMoreDetail }) => {
         </Link>
       </div>
 
-      <div className="bottom w-full h-[70%] flex justify-between items-center p-3">
-        <div className="left flex flex-col items-start gap-2 w-1/2 p-2">
-          <h1 className="font-[Gilroy-Bold] text-sm text-neutral-600">
+      <div className="bottom w-full flex justify-between items-center p-2">
+        <div className="left flex flex-col items-start gap-2 w-1/2 p-1">
+          <BiFoodTag
+            className={`${card?.info?.isVeg ? "text-green-500" : "text-red-500"}`}
+          />
+          <h1 className="font-[Gilroy-Bold] text-sm text-neutral-600 line-clamp-3">
             {card?.info?.name}
           </h1>
           <span className=" text-sm text-neutral-600 font-[Gilroy-Semibold]">
-            ₹{card?.info?.defaultPrice ? card?.info?.defaultPrice / 100 : card?.info?.price / 100}
+            ₹
+            {card?.info?.defaultPrice
+              ? card?.info?.defaultPrice / 100
+              : card?.info?.price / 100}
           </span>
-          <button
-            onClick={() => handleMoreDetail(card?.info)}
-            className="text-[.65rem] text-neutral-500 border px-2 py-1 rounded-full flex items-center gap-2"
-          >
-            More details <IoIosArrowForward />{" "}
-          </button>
+          {card?.info?.description ? (
+            <button
+              onClick={() => handleMoreDetail(card)}
+              className="text-[.65rem] text-neutral-500 border px-2 py-1 rounded-full flex items-center gap-2"
+            >
+              More details <IoIosArrowForward />{" "}
+            </button>
+          ) : null}
         </div>
         <div className="right">
           <div className="relative">
             <img
-              className={`md:w-28 w-32 md:h-28 h-32 rounded-lg`}
+              className={`md:w-32 w-24 md:h-32 h-24 rounded-lg object-cover`}
               src={
                 card.info.imageId
                   ? `https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_208,h_208,c_fit/${card?.info?.imageId}`

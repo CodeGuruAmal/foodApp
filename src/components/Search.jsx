@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setMetaData, setSearchData } from "../utils/searchSlice";
+import { IoArrowBack } from "react-icons/io5";
 
 const Search = () => {
   const coordinates = useSelector((state) => state.location.coordinates);
@@ -96,7 +97,10 @@ const Search = () => {
 
   return (
     <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[95%] md:w-[70%] xl:w-[55%] flex flex-col gap-3 h-[90vh] ">
-      <div className="w-full p-3 pt-7 flex flex-col gap-8">
+      <div className="w-full p-3 pt-1 flex flex-col gap-4">
+        <button className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 p-2 rounded-xl">
+          <IoArrowBack onClick={() => navigate(-1)} />
+        </button>
         <div className="relative">
           <input
             type="text"
@@ -154,7 +158,7 @@ const Search = () => {
                 handleMetaData(JSON.parse(item.metadata));
               }}
               className="flex gap-4 w-full cursor-pointer"
-              key={item.cloudinaryId}
+              key={index}
             >
               <div className="w-14 h-14 overflow-hidden rounded-lg">
                 <img
