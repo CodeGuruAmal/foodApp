@@ -88,8 +88,8 @@ const SearchResult = () => {
 
       <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[95%] md:w-[45rem] lg:w-[50rem] flex flex-col items-center gap-3 h-[90vh]">
         <div className="w-full py-2 flex sm:flex-col gap-4 sm:items-start items-center justify-between">
-          <button className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 p-2 rounded-xl">
-            <IoArrowBack onClick={() => navigate(-1)} />
+          <button onClick={() => navigate(-1)} className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 p-2 rounded-xl">
+            <IoArrowBack/>
           </button>
 
           <div className="font-[Gilroy-semibold]">
@@ -139,7 +139,7 @@ const SearchResult = () => {
                 card?.info && (
                   <div
                     key={card?.info?.id}
-                    className="sm:w-[48%] w-full h-56f bg-white shadow-md border rounded-2xl overflow-hidden"
+                    className="sm:w-[48%] w-full h-52 sm:h-56 bg-white shadow-md border rounded-2xl overflow-hidden"
                   >
                     <Dishes card={card} handleMoreDetail={handleMoreDetail} />
                   </div>

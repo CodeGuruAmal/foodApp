@@ -78,8 +78,8 @@ const RestaurantMenu = () => {
           <span className="text-neutral-600">{detailsData?.name}</span>
         </div>
 
-        <button className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 p-2 rounded-xl">
-            <IoArrowBack onClick={() => navigate(-1)} />
+        <button onClick={() => navigate(-1)} className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 mt-5 p-2 rounded-xl">
+            <IoArrowBack />
           </button>
 
         <Details />

@@ -11,7 +11,7 @@ const WithOnlineDelivery = () => {
   const [dataNotFound, setDataNotFound] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
-  const [filterBtnClick, setFilterBtnClick] = useState(false)
+  const [filterBtnClick, setFilterBtnClick] = useState(false);
 
   const filterOptions = [
     "Fast Delivery",
@@ -21,7 +21,7 @@ const WithOnlineDelivery = () => {
     "Rs. 300-Rs. 600",
     "Less than Rs. 300",
   ];
-  
+
   // console.log(homeData)
 
   useEffect(() => {
@@ -57,10 +57,9 @@ const WithOnlineDelivery = () => {
     }
   };
 
-
   const handleFilterBtnClick = () => {
     setFilterBtnClick(!filterBtnClick);
-  }
+  };
 
   useEffect(() => {
     if (selectedFilter.length > 0) {
@@ -102,7 +101,7 @@ const WithOnlineDelivery = () => {
     }
   }, [selectedFilter, restaurantDetails]);
 
-  console.log(filteredItems)
+  // console.log(filteredItems)
 
   return (
     <div>
@@ -138,10 +137,17 @@ const WithOnlineDelivery = () => {
             {/* ----------------------------------------------- Filter Button --------------------------------------------------------- */}
 
             <div className="relative">
-              <button onClick={handleFilterBtnClick} className="block md:hidden shadow border border-neutral-300 rounded-full px-4 py-2">
+              <button
+                onClick={handleFilterBtnClick}
+                className="block md:hidden shadow border border-neutral-300 rounded-full px-4 py-2"
+              >
                 <IoFilter />
               </button>
-              <div className={`absolute p-4 rounded-xl ${filterBtnClick ? "flex" : "hidden"}  shadow flex-col gap-2 text-neutral-700 border border-neutral-300 bg-white z-50 top-10`}>
+              <div
+                className={`absolute p-4 rounded-xl ${
+                  filterBtnClick ? "flex" : "hidden"
+                }  shadow flex-col gap-2 text-neutral-700 border border-neutral-300 bg-white z-50 top-10`}
+              >
                 {filterOptions.map((option, idx) => (
                   <button
                     onClick={() => selectFilterOption(option)}
@@ -168,9 +174,11 @@ const WithOnlineDelivery = () => {
           <div className="flex flex-wrap justify-center gap-[1.5rem] mt-7">
             {filteredItems && filteredItems.length > 0 ? (
               filteredItems.map(({ info }, index) => (
-                <div key={ index}>
-                  <RestaurantCard {...info} />
-                </div>
+                
+                  <div key={index} className="card duration-100 hover:scale-95 w-[8rem] sm:w-[14rem] ">
+                    <RestaurantCard {...info} />
+                  </div>
+                
               ))
             ) : (
               <p>No restaurants found matching the selected filters</p>

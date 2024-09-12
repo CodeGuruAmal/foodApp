@@ -98,8 +98,8 @@ const Search = () => {
   return (
     <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[95%] md:w-[70%] xl:w-[55%] flex flex-col gap-3 h-[90vh] ">
       <div className="w-full p-3 pt-1 flex flex-col gap-4">
-        <button className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 p-2 rounded-xl">
-          <IoArrowBack onClick={() => navigate(-1)} />
+        <button onClick={() => navigate(-1)} className="text-xl duration-200 cursor-pointer w-10 h-10 flex items-center justify-center hover:bg-neutral-100 p-1 rounded-xl">
+          <IoArrowBack/>
         </button>
         <div className="relative">
           <input

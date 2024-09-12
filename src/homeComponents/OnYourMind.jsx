@@ -38,7 +38,7 @@ const OnYourMind = () => {
               {headerTitle}
             </h2>
 
-            <div className="flex gap-4 text-xl text-zinc-800">
+            {/* <div className="flex gap-4 text-xl text-zinc-800">
               <button
                 className={`text-sm w-6 h-6 rounded bg-zinc-300 flex items-center justify-center transition-opacity duration-300 `}
               >
@@ -49,7 +49,7 @@ const OnYourMind = () => {
               >
                 <IoArrowForward />
               </button>
-            </div>
+            </div> */}
           </div>
 
           <div className="h-slider flex gap-[.3rem] overflow-x-scroll scroll-smooth mt-5 pb-7">

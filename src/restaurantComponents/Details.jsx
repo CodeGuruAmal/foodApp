@@ -17,7 +17,7 @@ const Details = () => {
   const feeDetails = detailsData?.feeDetails?.message;
 
   return (
-    <div className="details mt-9">
+    <div className="details mt-4">
       <h2 className="text-2xl md:text-xl font-[Gilroy-ExtraBold]">
         {restaurantName}
       </h2>

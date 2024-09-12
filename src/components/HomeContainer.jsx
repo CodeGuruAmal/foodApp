@@ -5,7 +5,6 @@ import WithOnlineDelivery from "../homeComponents/WithOnlineDelivery";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setHomeData } from "../utils/homeSlice";
-import { setCoordinates } from "../utils/locationSlice"; // Import the setCoordinates action
 import NoService from "./NoService";
 
 const HomeContainer = () => {
@@ -18,25 +17,28 @@ const HomeContainer = () => {
 
   useEffect(() => {
     if (coordinates?.geometry?.location) {
+      const { lat, lng } = coordinates.geometry.location;
+      const isMobile = window.innerWidth <= 768;
+
+      const apiUrl = isMobile
+        ? `https://www.swiggy.com/mapi/restaurants/list/v5?offset=0&is-seo-homepage-enabled=true&lat=${lat}&lng=${lng}&carousel=true&third_party_vendor=1`
+        : `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${lat}&lng=${lng}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
+
+      // Using axios to fetch data
       axios
-        .get(
-          `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${coordinates.geometry.location.lat}&lng=${coordinates.geometry.location.lng}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
-        )
-        .then((res) => dispatch(setHomeData(res?.data?.data)))
-        .catch((err) => console.log(err));
+        .get(apiUrl)
+        .then((res) => {
+          dispatch(setHomeData(res?.data?.data));
+        })
+        .catch((err) => {
+          console.error("Error fetching data:", err);
+          if (err.res?.status === 404) {
+            // Handle 404 errors
+            console.error("Data not found. Status code:", err.res.status);
+          }
+        });
     }
   }, [coordinates, dispatch]);
-
-  // useEffect(() => {
-  //   if (coordinates?.geometry?.location) {
-  //   axios
-  //     .get(
-  //       `https://www.swiggy.com/mapi/restaurants/list/v5?offset=0&is-seo-homepage-enabled=true&lat=${coordinates.geometry.location.lat}&lng=${coordinates.geometry.location.lng}&carousel=true&third_party_vendor=1`
-  //     )
-  //     .then((res) => console.log(res))
-  //     .catch((err) => console.log(err));
-  //   }
-  // }, [coordinates]);
 
   if (homeData.communication) {
     return <NoService />;

@@ -3,32 +3,38 @@ import { MdStars } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const RestaurantCard = (info) => {
-  const id = info.id
-  const discountInfoHeader = info?.aggregatedDiscountInfoV3?.header;
+  // console.log(info)
+  const id = info.id;
+  const discountInfoHeader =
+    info?.aggregatedDiscountInfoV3?.header ||
+    info?.aggregatedDiscountInfoV2?.header;
   const discountInfoSubHeader = info?.aggregatedDiscountInfoV3?.subHeader;
   const restaurantImage = info?.cloudinaryImageId;
   const restaurantName = info?.name;
   const restaurantRating = info?.avgRating;
   const deliveryTime = info?.sla?.slaString;
-
   const cuisines = info?.cuisines ? (info?.cuisines).join(", ") : "";
   const trimCuisines = cuisines ? cuisines.substring(0, 30) + "..." : [];
-
   const place = info?.areaName;
 
-
+  // console.log(restaurantImage)
 
   return (
     <>
       <Link to={`/menu/${id}`}>
-        <div className="card duration-100 hover:scale-95 w-[12rem] md:w-[14rem] ">
+        
           <div className="w-full h-[8.3rem] md:h-[10rem] overflow-hidden rounded-xl relative">
             <img
-              src={`https://media-assets.swiggy.com/swiggy/image/upload//fl_lossy,f_auto,q_auto,w_660/${restaurantImage}`}
+              src={
+                restaurantImage
+                  ? `https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/${restaurantImage}`
+                  : "../../public/img/alt.jpg"
+              }
               className="object-center w-full h-full object-cover"
               alt=""
             />
-            <h1 className="absolute bottom-1 left-2 text-[1rem] text-zinc-100 z-10 font-[ProximaNova]">
+
+            <h1 className="absolute bottom-1 left-2 text-sm flex flex-col gap-1 sm:flex-row md:text-[1rem] text-zinc-100 z-10 font-[ProximaNova]">
               <span>{discountInfoHeader}</span>{" "}
               <span>{discountInfoSubHeader}</span>
             </h1>
@@ -63,7 +69,7 @@ const RestaurantCard = (info) => {
               {place}
             </p>
           </div>
-        </div>
+
       </Link>
     </>
   );
