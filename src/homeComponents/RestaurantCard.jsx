@@ -23,7 +23,7 @@ const RestaurantCard = (info) => {
     <>
       <Link to={`/menu/${id}`}>
         
-          <div className="w-full h-[8.3rem] md:h-[10rem] overflow-hidden rounded-xl relative">
+          <div className="w-full h-[10rem] overflow-hidden rounded-xl relative">
             <img
               src={
                 restaurantImage
@@ -34,7 +34,7 @@ const RestaurantCard = (info) => {
               alt=""
             />
 
-            <h1 className="absolute bottom-1 left-2 text-sm flex flex-col gap-1 sm:flex-row md:text-[1rem] text-zinc-100 z-10 font-[ProximaNova]">
+            <h1 className="absolute bottom-1 left-2 flex flex-col gap-1 sm:flex-row text-[1rem] text-zinc-100 z-10 font-[ProximaNova]">
               <span>{discountInfoHeader}</span>{" "}
               <span>{discountInfoSubHeader}</span>
             </h1>

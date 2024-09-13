@@ -4,8 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setMetaData, setSearchData } from "../utils/searchSlice";
 import { IoArrowBack } from "react-icons/io5";
+import { SearchBarLoader } from "../loaderComponents/SearchLoader";
 
 const Search = () => {
+  const [loading, setLoading] = useState(true);
+  const [visible, setVisible] = useState(true);
+
   const coordinates = useSelector((state) => state.location.coordinates);
   const [popularCuisine, setPopularCuisine] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,8 +30,19 @@ const Search = () => {
         .get(
           `https://www.swiggy.com/dapi/landing/PRE_SEARCH?lat=${coordinates?.geometry?.location?.lat}&lng=${coordinates?.geometry?.location?.lng}`
         )
-        .then((res) => setPopularCuisine(res?.data?.data?.cards[1]?.card?.card))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          setPopularCuisine(res?.data?.data?.cards[1]?.card?.card);
+          setTimeout(() => {
+            setLoading(false);
+          }, 800);
+          setTimeout(() => {
+            setVisible(false);
+          }, 1000);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
   }, [coordinates]);
 
@@ -98,8 +113,11 @@ const Search = () => {
   return (
     <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[95%] md:w-[70%] xl:w-[55%] flex flex-col gap-3 h-[90vh] ">
       <div className="w-full p-3 pt-1 flex flex-col gap-4">
-        <button onClick={() => navigate(-1)} className="text-xl duration-200 cursor-pointer w-10 h-10 flex items-center justify-center hover:bg-neutral-100 p-1 rounded-xl">
-          <IoArrowBack/>
+        <button
+          onClick={() => navigate(-1)}
+          className="text-xl duration-200 cursor-pointer w-10 h-10 flex items-center justify-center hover:bg-neutral-100 p-1 rounded-xl"
+        >
+          <IoArrowBack />
         </button>
         <div className="relative">
           <input
@@ -120,32 +138,38 @@ const Search = () => {
           </span>
         </div>
 
-        <div
-          className={`w-full flex-col gap-5 border-t-8 border-b-8 p-5 ${
-            searchTerm ? "hidden" : "flex"
-          }`}
-        >
-          <h1 className="text-base md:text-lg font-[Gilroy-ExtraBold]">
-            {popularCuisineTitle}
-          </h1>
-          <div className="h-slider flex overflow-scroll gap-2">
-            {popularCuisineImg.map((item, index) => {
-              return (
-                <img
-                  onClick={() => {
-                    setSearchTerm(
-                      decodeURIComponent(item.action.link.split("=").at(-1))
-                    );
-                  }}
-                  className="md:w-20 w-16 cursor-pointer"
-                  key={index}
-                  src={`https://media-assets.swiggy.com/swiggy/image/upload/${item.imageId}`}
-                  alt=""
-                />
-              );
-            })}
+        {loading ? (
+          <SearchBarLoader />
+        ) : (
+          <div
+            className={`${
+              visible ? "opacity-0" : "opacity-100"
+            } w-full flex-col gap-5 border-t-8 border-b-8 p-5 ${
+              searchTerm ? "hidden" : "flex"
+            }`}
+          >
+            <h1 className="text-base md:text-lg font-[Gilroy-ExtraBold]">
+              {popularCuisineTitle}
+            </h1>
+            <div className="h-slider flex overflow-scroll gap-2">
+              {popularCuisineImg.map((item, index) => {
+                return (
+                  <img
+                    onClick={() => {
+                      setSearchTerm(
+                        decodeURIComponent(item.action.link.split("=").at(-1))
+                      );
+                    }}
+                    className="md:w-20 w-16 cursor-pointer"
+                    key={index}
+                    src={`https://media-assets.swiggy.com/swiggy/image/upload/${item.imageId}`}
+                    alt=""
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="v-slider flex flex-col gap-3 w-full  h-full py-2 px-4 overflow-scroll">

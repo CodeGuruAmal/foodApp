@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -10,13 +10,13 @@ import {
 import Details from "../restaurantComponents/Details";
 import Offers from "../restaurantComponents/Offers";
 import Menu from "../restaurantComponents/Menu";
-import CartRefresher from "../CartComponents/CartRefresher";
+import CartRefresher from "../cartComponents/CartRefresher";
 import { IoArrowBack } from "react-icons/io5";
-
+import MenuLoader from "../loaderComponents/MenuLoader";
 
 const RestaurantMenu = () => {
   const { id } = useParams();
-
+  const [loading, setLoading] = useState(true);
   const detailsData = useSelector((state) => state.restaurant.detailsData);
   const coordinates = useSelector((state) => state.location.coordinates);
   const cartClick = useSelector((state) => state.nav.cartClick);
@@ -24,14 +24,14 @@ const RestaurantMenu = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
   useEffect(() => {
-    if (coordinates?.geometry?.location?.lat && coordinates?.geometry?.location?.lng) {
+    if (
+      coordinates?.geometry?.location?.lat &&
+      coordinates?.geometry?.location?.lng
+    ) {
       axios
         .get(
-          `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=${
-            coordinates?.geometry?.location?.lat
-          }&lng=${coordinates?.geometry?.location?.lng}&restaurantId=${id}&catalog_qa=undefined&submitAction=ENTER`
+          `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=${coordinates?.geometry?.location?.lat}&lng=${coordinates?.geometry?.location?.lng}&restaurantId=${id}&catalog_qa=undefined&submitAction=ENTER`
         )
         .then((res) => {
           dispatch(setDetailsData(res?.data?.data?.cards[2]?.card?.card?.info));
@@ -41,9 +41,11 @@ const RestaurantMenu = () => {
                 ?.offers
             )
           );
-          
+
           // console.log(menuResult)
-          let menuResult = res?.data?.data?.cards.filter((item) => item.groupedCard)
+          let menuResult = res?.data?.data?.cards.filter(
+            (item) => item.groupedCard
+          );
           dispatch(
             setMenuData(
               menuResult[0]?.groupedCard.cardGroupMap?.REGULAR?.cards?.filter(
@@ -54,6 +56,10 @@ const RestaurantMenu = () => {
               )
             )
           );
+
+          setTimeout(() => {
+            setLoading(false);
+          }, 800)
         })
         .catch((err) => console.log(err));
     }
@@ -62,25 +68,28 @@ const RestaurantMenu = () => {
     coordinates?.geometry?.location?.lng,
   ]);
 
-
+  if(loading) {
+    return <MenuLoader />
+  }
 
   return (
     <>
-<CartRefresher />
+      <CartRefresher />
 
       <div
-        className={`md:w-[75%] lg:w-[47%] w-[95%]  left-1/2 -translate-x-1/2 absolute top-20 ${
-          cartClick || menuClick ? "max-h-[85vh] overflow-hidden" : ""
-        } `}
+        className={`md:w-[75%] lg:w-[47%] w-[95%]  left-1/2 -translate-x-1/2 absolute top-20 `}
       >
         <div className="nav text-[.6rem] font-[Gilroy-Medium] tracking-wider text-neutral-400">
           <Link to={"/"}>Home</Link> / <span>{detailsData?.city}</span> /{" "}
           <span className="text-neutral-600">{detailsData?.name}</span>
         </div>
 
-        <button onClick={() => navigate(-1)} className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 mt-5 p-2 rounded-xl">
-            <IoArrowBack />
-          </button>
+        <button
+          onClick={() => navigate(-1)}
+          className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 mt-5 p-2 rounded-xl"
+        >
+          <IoArrowBack />
+        </button>
 
         <Details />
         <Offers />

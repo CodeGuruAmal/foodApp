@@ -30,7 +30,8 @@ const WithOnlineDelivery = () => {
         (data) => data?.card?.card?.id === "popular_restaurants_title"
       );
       const detailsFinder = homeData?.cards.find(
-        (data) => data?.card?.card?.id === "restaurant_grid_listing"
+        (data) => data?.card?.card?.id === "top_brands_for_you"
+        // (data) => data?.card?.card?.id === "restaurant_grid_listing"
       );
 
       if (titleFinder || detailsFinder) {
@@ -175,7 +176,7 @@ const WithOnlineDelivery = () => {
             {filteredItems && filteredItems.length > 0 ? (
               filteredItems.map(({ info }, index) => (
                 
-                  <div key={index} className="card duration-100 hover:scale-95 w-[8rem] sm:w-[14rem] ">
+                  <div key={index} className="card duration-100 hover:scale-95 w-[8.5rem] sm:w-[14rem] ">
                     <RestaurantCard {...info} />
                   </div>
                 

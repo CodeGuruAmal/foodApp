@@ -31,7 +31,7 @@ const Navbar = () => {
     { link: "Search", path: "/search" },
     { link: "Locate" },
     { link: "Cart" },
-    { link: "SignUp", path: "/" },
+    { link: "SignUp", path: "/loader" },
   ]);
 
   const menuClick = useSelector((state) => state.nav.menuClick);

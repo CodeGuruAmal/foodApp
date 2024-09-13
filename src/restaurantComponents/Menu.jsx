@@ -58,7 +58,7 @@ const Menu = () => {
     // console.log(id)
   };
 
-// console.log(menuData)
+console.log(menuData)
 
   const handleAddToCart = (data, resData) => {
     const isAdded = cartData.find((item) => item.id === data.id);

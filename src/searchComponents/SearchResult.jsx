@@ -6,8 +6,10 @@ import { IoArrowBack } from "react-icons/io5";
 import Dishes from "./Dishes";
 import { setMoreDetail } from "../utils/searchSlice";
 import MoreDetails from "./MoreDetails";
-import CartRefresher from "../CartComponents/CartRefresher";
+import CartRefresher from "../cartComponents/CartRefresher";
 import Restaurants from "./Restaurants";
+import { SearchResultLoader } from "../loaderComponents/SearchLoader";
+// import { SearchRestaurant } from "../loaderComponents/SearchLoader";
 
 const SearchResult = () => {
   const { result } = useParams();
@@ -19,7 +21,11 @@ const SearchResult = () => {
   );
   const [restaurantData, setRestaurantData] = useState([]);
   const [dishData, setDishData] = useState([]);
-  const [dataNotFound, setDataNotFound] = useState(false);
+  const [resLoading, setResLoading] = useState(true);
+  const [disLoading, setDisLoading] = useState(true);
+  const [visible, setVisible] = useState(true);
+
+  // const [dataNotFound, setDataNotFound] = useState(false);
   const dispatch = useDispatch();
 
   const fetchRestaurantData = () => {
@@ -31,13 +37,20 @@ const SearchResult = () => {
         .get(
           `https://www.swiggy.com/dapi/restaurants/search/v3?lat=${coordinates?.geometry?.location?.lat}&lng=${coordinates?.geometry?.location?.lng}&str=${result}&trackingId=undefined&submitAction=ENTER&queryUniqueId=d66807b7-7a3e-0232-6800-908aceb6ae0b&selectedPLTab=RESTAURANT`
         )
-        .then((res) =>
+        .then((res) => {
           setRestaurantData(
             res?.data?.data?.cards[0]?.groupedCard?.cardGroupMap?.RESTAURANT
               ?.cards
-          )
-        )
-        .catch((err) => console.log(err));
+          );
+
+          setTimeout(() => {
+            setResLoading(false);
+          }, 800);
+        })
+        .catch((err) => {
+          console.log(err);
+          setResLoading(false);
+        });
     }
   };
 
@@ -50,10 +63,14 @@ const SearchResult = () => {
         .get(
           `https://www.swiggy.com/dapi/restaurants/search/v3?lat=${coordinates?.geometry?.location?.lat}&lng=${coordinates?.geometry?.location?.lng}&str=${result}&trackingId=null&submitAction=SUGGESTION&queryUniqueId=9ad4cd61-57b9-e2db-8622-7d4802804dd3&metaData=%7B%22type%22%3A%22DISH%22%2C%22data%22%3A%7B%22vegIdentifier%22%3A%22${metaData?.data?.vegIdentifier}%22%2C%22cloudinaryId%22%3A%22${metaData?.data?.cloudinaryId}%22%2C%22dishFamilyId%22%3A%22${metaData?.data?.dishFamilyId}%22%2C%22dishFamilyIds%22%3A%5B%22${metaData?.data?.dishFamilyId}%22%5D%7D%2C%22businessCategory%22%3A%22SWIGGY_FOOD%22%2C%22displayLabel%22%3A%22Dish%22%7D`
         )
-        .then((res) =>
+        .then((res) => {
           setDishData(
             res?.data?.data?.cards[1].groupedCard?.cardGroupMap?.DISH?.cards
           )
+          setTimeout(() => {
+            setDisLoading(false);
+          }, 800);
+        }
         )
         .catch((err) => console.log(err));
     }
@@ -88,8 +105,11 @@ const SearchResult = () => {
 
       <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[95%] md:w-[45rem] lg:w-[50rem] flex flex-col items-center gap-3 h-[90vh]">
         <div className="w-full py-2 flex sm:flex-col gap-4 sm:items-start items-center justify-between">
-          <button onClick={() => navigate(-1)} className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 p-2 rounded-xl">
-            <IoArrowBack/>
+          <button
+            onClick={() => navigate(-1)}
+            className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 p-2 rounded-xl"
+          >
+            <IoArrowBack />
           </button>
 
           <div className="font-[Gilroy-semibold]">
@@ -111,42 +131,62 @@ const SearchResult = () => {
           </div>
         </div>
 
-        <div className="w-full h-full overflow-scroll bg-neutral-100 font-[Gilroy-Medium] px-2 pt-5 pb-2 shadow-inner">
-          <div
+        <div className="w-full h-full overflow-scroll bg-neutral-100 font-[Gilroy-Medium] p-2 shadow-inner">
+          {resLoading ? (
+            <div
             className={`${
               isActive === "RESTAURANT" ? "flex" : "hidden"
-            } restaurants relative w-[100%] mx-auto  flex-wrap justify-between gap-3 h-full `}
+            }`}
           >
-            {restaurantData &&
-              restaurantData.map(
-                ({
-                  card: {
-                    card: { info },
-                  },
-                }) => {
-                  return <Restaurants key={info?.id} info={info} />;
-                }
-              )}
-          </div>
+            <SearchResultLoader />
+            </div>
+          ) : (
+            <div
+              className={`${
+                isActive === "RESTAURANT" ? "flex" : "hidden"
+              } restaurants relative w-[100%] mx-auto  flex-wrap justify-between gap-3 p-2 h-full `}
+            >
+              {restaurantData &&
+                restaurantData.map(
+                  ({
+                    card: {
+                      card: { info },
+                    },
+                  }) => {
+                    return <Restaurants key={info?.id} info={info} />;
+                  }
+                )}
+            </div>
+          )}
 
-          <div
+          {disLoading ? (
+            <div
             className={`${
               isActive === "DISH" ? "flex" : "hidden"
-            } dishes relative w-[100%] mx-auto  flex-wrap justify-between gap-3 h-full `}
+            }`}
           >
-            {dishData.map(({ card: { card } }) => {
-              return (
-                card?.info && (
-                  <div
-                    key={card?.info?.id}
-                    className="sm:w-[48%] w-full h-52 sm:h-56 bg-white shadow-md border rounded-2xl overflow-hidden"
-                  >
-                    <Dishes card={card} handleMoreDetail={handleMoreDetail} />
-                  </div>
-                )
-              );
-            })}
-          </div>
+            <SearchResultLoader />
+            </div>
+          ) : (
+            <div
+              className={`${
+                isActive === "DISH" ? "flex" : "hidden"
+              } dishes relative w-[100%] mx-auto  flex-wrap justify-between gap-3 h-full `}
+            >
+              {dishData.map(({ card: { card } }) => {
+                return (
+                  card?.info && (
+                    <div
+                      key={card?.info?.id}
+                      className="sm:w-[48%] w-full h-52 sm:h-56 bg-white shadow-md border rounded-2xl overflow-hidden"
+                    >
+                      <Dishes card={card} handleMoreDetail={handleMoreDetail} />
+                    </div>
+                  )
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </div>

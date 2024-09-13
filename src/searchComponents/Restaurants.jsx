@@ -33,8 +33,8 @@ const Restaurants = ({ info }) => {
             <span>{info?.sla?.slaString}</span>•
             <span>{info?.costForTwoMessage}</span>
           </div>
-          <span className="sm:block hidden">{trimCuisines}</span>
-          <span className="sm:hidden block">{cuisines}</span>
+          <span className="">{trimCuisines}</span>
+          {/* <span className="sm:hidden block">{cuisines}</span> */}
         </div>
       </Link>
     </>
