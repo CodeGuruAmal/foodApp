@@ -7,12 +7,12 @@ import {
   setMenuData,
   setOffersData,
 } from "../utils/restaurantSlice";
-import Details from "../restaurantComponents/Details";
-import Offers from "../restaurantComponents/Offers";
-import Menu from "../restaurantComponents/Menu";
-import CartRefresher from "../cartComponents/CartRefresher";
+import Details from "./restaurantComponents/Details";
+import Offers from "./restaurantComponents/Offers";
+import Menu from "./restaurantComponents/Menu";
+import CartRefresher from "./CartComponents/CartRefresher";
 import { IoArrowBack } from "react-icons/io5";
-import MenuLoader from "../loaderComponents/MenuLoader";
+import MenuLoader from "./loaderComponents/MenuLoader";
 
 const RestaurantMenu = () => {
   const { id } = useParams();

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setMetaData, setSearchData } from "../utils/searchSlice";
 import { IoArrowBack } from "react-icons/io5";
-import { SearchBarLoader } from "../loaderComponents/SearchLoader";
+import { SearchBarLoader } from "./loaderComponents/SearchLoader";
 
 const Search = () => {
   const [loading, setLoading] = useState(true);
@@ -37,7 +37,7 @@ const Search = () => {
           }, 800);
           setTimeout(() => {
             setVisible(false);
-          }, 1000);
+          }, 1500);
         })
         .catch((err) => {
           console.log(err);
@@ -144,7 +144,7 @@ const Search = () => {
           <div
             className={`${
               visible ? "opacity-0" : "opacity-100"
-            } w-full flex-col gap-5 border-t-8 border-b-8 p-5 ${
+            } w-full flex-col gap-5 border-t-8 border-b-8 p-5 mt-6 ${
               searchTerm ? "hidden" : "flex"
             }`}
           >

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart, setIsDiffResMessage } from "../utils/cartSlice";
+import { clearCart, setIsDiffResMessage } from "../../utils/cartSlice";
 import toast from "react-hot-toast";
 
 const CartRefresher = () => {

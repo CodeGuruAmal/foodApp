@@ -23,7 +23,7 @@ const HomeLoader = () => {
       </div>
 
       <div className="w-full h-full flex justify-center gap-8 mt-8 p-5">
-        <div className="big-card md:block hidden w-56 h-full rounded-sm border shadow-md overflow-hidden">
+        <div className="big-card md:block hidden w-56 h-full rounded-sm   overflow-hidden">
           <div className="w-full p-4 shimmer-bg  flex items-center justify-between">
             <div className="w-10 h-10 bg-white rounded-full"></div>
             <div className="w-[65%] h-2 bg-white rounded-sm"></div>
@@ -42,9 +42,9 @@ const HomeLoader = () => {
             .fill("")
             .map((_, index) => (
               <div key={index} className="sm:w-44 w-32 sm:h-36 h-44 flex flex-col gap-2 ">
-                <div className="w-full h-28 shimmer-bg border-2 rounded-sm shadow-md"></div>
-                <div className="w-[80%] h-2 shimmer-bg border-2 rounded-sm shadow-md"></div>
-                <div className="w-[65%] h-2 shimmer-bg border-2 rounded-sm shadow-md"></div>
+                <div className="w-full h-28 shimmer-bg rounded-sm "></div>
+                <div className="w-[80%] h-2 shimmer-bg rounded-sm "></div>
+                <div className="w-[65%] h-2 shimmer-bg rounded-sm "></div>
               </div>
             ))}
         </div>

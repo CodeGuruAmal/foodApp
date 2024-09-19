@@ -4,8 +4,8 @@ import { BiFoodTag } from "react-icons/bi";
 import { TbX } from "react-icons/tb";
 import { MdStars } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { setCartClick, setMenuClick } from "../utils/navSlice";
-import { clearCart, removeItem, setAddedItem, setCartData } from "../utils/cartSlice";
+import { setCartClick, setMenuClick } from "../../utils/navSlice";
+import { clearCart, removeItem, setAddedItem, setCartData } from "../../utils/cartSlice";
 import toast from "react-hot-toast";
 
 const Checkout = () => {
@@ -187,7 +187,7 @@ const Checkout = () => {
                   className={`w-32 md:w-36 h-28 md:h-32 mx-auto object-cover rounded-lg  ${
                     item.imageId ? "visible" : "invisible"
                   }`}
-                  src={`https://media-assets.swiggy.com/swiggy/image/upload/${item.imageId}`}
+                  src={item?.imageId ? `https://media-assets.swiggy.com/swiggy/image/upload/${item.imageId}` : "../../public/img/alt.jpg"}
                   alt=""
                 />
 

@@ -60,7 +60,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: var(--secondary-font-color);
+    background-color: var(--primary-font-color);
     border-radius: 8px;
 }
 
@@ -100,11 +100,11 @@ body {
   }
   
   .animate-image-1 {
-    animation-delay: 0; 
+    animation-delay: .4s; 
   }
   
   .animate-image-2 {
-    animation-delay: 1s;
+    animation-delay: 1.4s;
   }
 
   

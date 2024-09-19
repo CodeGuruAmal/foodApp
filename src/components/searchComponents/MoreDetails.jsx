@@ -1,12 +1,12 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setMoreDetail } from "../utils/searchSlice";
+import { setMoreDetail } from "../../utils/searchSlice";
 import {
   setAddedItem,
   setCartData,
   setIsDiffResMessage,
   setResInfo,
-} from "../utils/cartSlice";
+} from "../../utils/cartSlice";
 import toast from "react-hot-toast";
 import { TbX } from "react-icons/tb";
 

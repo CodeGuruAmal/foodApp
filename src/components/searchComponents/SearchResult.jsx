@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { IoArrowBack } from "react-icons/io5";
 import Dishes from "./Dishes";
-import { setMoreDetail } from "../utils/searchSlice";
+import { setMoreDetail } from "../../utils/searchSlice";
 import MoreDetails from "./MoreDetails";
 import CartRefresher from "../cartComponents/CartRefresher";
 import Restaurants from "./Restaurants";
@@ -178,7 +178,7 @@ const SearchResult = () => {
                   card?.info && (
                     <div
                       key={card?.info?.id}
-                      className="sm:w-[48%] w-full h-52 sm:h-56 bg-white shadow-md border rounded-2xl overflow-hidden"
+                      className="sm:w-[48%] w-full h-56 sm:h-60 bg-white shadow-md border rounded-2xl overflow-hidden"
                     >
                       <Dishes card={card} handleMoreDetail={handleMoreDetail} />
                     </div>

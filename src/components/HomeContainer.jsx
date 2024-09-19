@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import OnYourMind from "../homeComponents/OnYourMind";
-import TopRestaurant from "../homeComponents/TopRestaurant";
-import WithOnlineDelivery from "../homeComponents/WithOnlineDelivery";
+import OnYourMind from "./homeComponents/OnYourMind"
+import TopRestaurant from "./homeComponents/TopRestaurant";
+import WithOnlineDelivery from "./homeComponents/WithOnlineDelivery";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setHomeData } from "../utils/homeSlice";
 import NoService from "./NoService";
-import HomeLoader from "../loaderComponents/HomeLoader";
+import HomeLoader from "./loaderComponents/HomeLoader";
 
 const HomeContainer = () => {
   const [loading, setLoading] = useState(true);
@@ -14,6 +14,7 @@ const HomeContainer = () => {
   const locationClick = useSelector((state) => state.nav.locationClick);
   const menuClick = useSelector((state) => state.nav.menuClick);
   const cartClick = useSelector((state) => state.nav.cartClick);
+  const authClick = useSelector((state) => state.nav.authClick);
   const homeData = useSelector((state) => state.home.homeData);
   const coordinates = useSelector((state) => state.location.coordinates);
 
@@ -38,7 +39,7 @@ const HomeContainer = () => {
           }, 800);
           setTimeout(() => {
             setVisible(false);
-          }, 1750);
+          }, 1600);
         })
         .catch((err) => {
           console.error("Error fetching data:", err);
@@ -63,7 +64,7 @@ const HomeContainer = () => {
     <div className={`${visible ? "opacity-0" : "opacity-100"}`}>
       <div
         className={`lg:w-[75%] w-full left-1/2 px-5 -translate-x-1/2 absolute top-24 ${
-          locationClick || menuClick || cartClick
+          locationClick || menuClick || cartClick || authClick
             ? "max-h-[85vh] overflow-hidden"
             : ""
         } `}

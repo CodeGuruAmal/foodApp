@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { IoSearch, IoLocationOutline } from "react-icons/io5";
 import { FiUser } from "react-icons/fi";
+import { MdLogout } from "react-icons/md";
 import { TbMenu, TbX, TbCurrentLocation } from "react-icons/tb";
 import { BsBag } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setAuthClick,
   setCartClick,
   setLocationClick,
   setMenuClick,
@@ -17,33 +19,43 @@ import {
   setPlaceId,
 } from "../utils/locationSlice";
 import axios from "axios";
-import Checkout from "./Checkout";
+import Checkout from "./NavComponents/Checkout";
+import { removeUserData } from "../utils/authSlice";
+// import Login from "./AuthComponents/Login";
+// import SignUp from "./AuthComponents/SignUp";
+// import { setIsLogin } from "../utils/authSlice";
 
 const Navbar = () => {
   const iconMapping = {
     Search: <IoSearch className="md:text-sm text-xl " />,
     Locate: <TbCurrentLocation className="md:text-sm text-xl " />,
     Cart: <BsBag className="md:text-sm text-xl " />,
-    SignUp: <FiUser className="md:text-sm text-xl " />,
+    Login: <FiUser className="md:text-sm text-xl " />,
   };
 
   const [menuLink] = useState([
     { link: "Search", path: "/search" },
     { link: "Locate" },
     { link: "Cart" },
-    { link: "SignUp", path: "/loader" },
+    { link: "Login", path: "/login" },
   ]);
 
   const menuClick = useSelector((state) => state.nav.menuClick);
   const locationClick = useSelector((state) => state.nav.locationClick);
   const cartClick = useSelector((state) => state.nav.cartClick);
+  // const authClick = useSelector((state) => state.nav.authClick);
+
   const locationSearchTerm = useSelector(
     (state) => state.location.locationSearchTerm
   );
   const locationData = useSelector((state) => state.location.locationData);
   const placeId = useSelector((state) => state.location.placeId);
-  const cartData = useSelector((state) => state.cart.cartData);
   const coordinates = useSelector((state) => state.location.coordinates);
+
+  const cartData = useSelector((state) => state.cart.cartData);
+
+  // const userData = useSelector((state) => state.auth.userData);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -80,6 +92,10 @@ const Navbar = () => {
     dispatch(setCartClick(!cartClick));
   };
 
+  // const toggleAuthClick = () => {
+  //   dispatch(setAuthClick(!authClick));
+  // };
+
   const handleLocationSearchTerm = (e) => {
     dispatch(setLocationSearchTerm(e.target.value));
   };
@@ -88,6 +104,16 @@ const Navbar = () => {
     dispatch(setPlaceId(id));
   };
 
+  // const handleIsLogin = () => {
+  //   dispatch(setIsLogin(!isLogin))
+  // }
+
+
+  const handleLogout = () => {
+    console.log("Clicked")
+    dispatch(removeUserData())
+  }
+
   const placeName = coordinates?.formatted_address
     ? coordinates?.formatted_address
     : "";
@@ -95,6 +121,8 @@ const Navbar = () => {
 
   return (
     <>
+      {/* ========================================== This Section is for Desktop Nav ================================================= */}
+
       <div className="fixed p-3 z-[1000] w-full bg-white shadow-md shadow-zinc-200 text-xs font-[Gilroy-SemiBold] text-primaryFont">
         <div className="lg:w-[75%] w-full px-3 mx-auto flex justify-between items-center">
           <div className="left-nav flex items-center gap-4">
@@ -114,7 +142,7 @@ const Navbar = () => {
                       y1="63.8626"
                       x2="160.773"
                       y2="537.598"
-                      gradientUnits="userSpaceOnUse"
+                      gradientUnits="userDataSpaceOnUse"
                     >
                       <stop stopColor="#FF993A"></stop>
                       <stop offset="1" stopColor="#FF5200"></stop>
@@ -136,8 +164,7 @@ const Navbar = () => {
 
           <div className="right-nav md:flex text-xs items-center hidden">
             <nav className="flex gap-10">
-              {menuLink.map((m, index) => {
-                return (
+              {menuLink.map((m, index) =>
                   <Link
                     to={m.path}
                     key={index}
@@ -146,6 +173,11 @@ const Navbar = () => {
                         toggleLocationClick();
                       } else if (m.link === "Cart") {
                         toggleCartClick();
+                      } else if (m.link === "Login") {
+                        // toggleAuthClick();
+                        dispatch(setMenuClick(false));
+                      } else if (m.link === "Search") {
+                        dispatch(setMenuClick(false));
                       }
                     }}
                     className="flex items-center gap-1 w-full hover:text-secondaryFont relative"
@@ -163,8 +195,8 @@ const Navbar = () => {
                       )}
                     </span>
                   </Link>
-                );
-              })}
+                
+              )}
             </nav>
           </div>
 
@@ -188,6 +220,8 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* ========================================== This Section is for Mobile Nav ================================================= */}
+
       <div className="h-screen absolute">
         <div
           onClick={toggleMenuClick}
@@ -207,38 +241,44 @@ const Navbar = () => {
           />
 
           <nav className="flex flex-col h-full justify-center text-2xl w-full items-center px-10 gap-6 font-[Gilroy-Semibold]">
-            {menuLink.map((m, index) => {
-              return (
+            {menuLink.map((m, index) =>
                 <Link
-                  key={index}
                   to={m.path}
+                  key={index}
                   onClick={() => {
                     if (m.link === "Locate") {
                       toggleLocationClick();
                     } else if (m.link === "Cart") {
                       toggleCartClick();
+                    } else if (m.link === "Login") {
+                      // toggleAuthClick();
+                      dispatch(setMenuClick(false));
                     } else if (m.link === "Search") {
-                      toggleMenuClick();
+                      dispatch(setMenuClick(false));
                     }
                   }}
-                  className={`flex relative items-center gap-1 hover:text-secondaryFont px-4 py-2 `}
+                  className="flex relative items-center gap-1 hover:text-secondaryFont px-4 py-2"
                 >
-                  {iconMapping[m.link]} {m.link}{" "}
-                  {m.link === "Cart" && (
-                    <span className="text-secondaryFont text-xl ml-2 mt-[.11rem]">
-                      {cartData.length > 0
-                        ? cartData.length < 100
-                          ? cartData.length
-                          : "99+"
-                        : []}
-                    </span>
-                  )}
+                  <span className="flex gap-1">
+                    {iconMapping[m.link]} {m.link}{" "}
+                    {m.link === "Cart" && (
+                      <span className="text-secondaryFont text-xl ml-2 mt-[.11rem]">
+                        {cartData.length > 0
+                          ? cartData.length < 100
+                            ? cartData.length
+                            : "99+"
+                          : []}
+                      </span>
+                    )}
+                  </span>
                 </Link>
-              );
-            })}
+              
+            )}
           </nav>
         </div>
       </div>
+
+      {/* ========================================== This Section is for Location ================================================= */}
 
       <div className=" font-[Gilroy-Medium]">
         <div
@@ -314,6 +354,8 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* ========================================== This Section is for Cart ================================================= */}
+
       <div className={`  relative`}>
         <div
           onClick={toggleCartClick}
@@ -329,6 +371,7 @@ const Navbar = () => {
           <Checkout />
         </div>
       </div>
+
       <Outlet />
     </>
   );

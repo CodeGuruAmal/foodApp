@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { setFoodRestaurant } from "../utils/homeSlice";
-import RestaurantCard from "../homeComponents/RestaurantCard";
+import RestaurantCard from "./homeComponents/RestaurantCard";
 import { IoArrowBack } from "react-icons/io5";
 
 const RestaurantForFood = () => {

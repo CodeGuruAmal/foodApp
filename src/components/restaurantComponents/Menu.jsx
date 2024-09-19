@@ -10,7 +10,7 @@ import {
   setCartData,
   setIsDiffResMessage,
   setResInfo,
-} from "../utils/cartSlice";
+} from "../../utils/cartSlice";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 

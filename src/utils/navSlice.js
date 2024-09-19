@@ -5,7 +5,8 @@ const navSlice = createSlice({
   initialState: {
     menuClick: false,
     locationClick: false,
-    cartClick: false
+    cartClick: false,
+    authClick: false,
   },
   reducers: {
     setMenuClick: (state, action) => {
@@ -18,9 +19,12 @@ const navSlice = createSlice({
 
     setCartClick: (state, action) => {
       state.cartClick = action.payload;
+    },
+    setAuthClick: (state, action) => {
+      state.authClick = action.payload;
     }
   },
 });
 
-export const { setMenuClick, setLocationClick, setCartClick } = navSlice.actions;
+export const { setMenuClick, setLocationClick, setCartClick, setAuthClick } = navSlice.actions;
 export default navSlice.reducer;

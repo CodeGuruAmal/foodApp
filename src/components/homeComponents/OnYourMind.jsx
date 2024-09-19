@@ -62,7 +62,7 @@ const OnYourMind = () => {
                 <Link to={`/restaurants_by_food/${collectionId}`} key={index}>
                   <div>
                     <img
-                      className="md:min-w-24 min-w-20"
+                      className="lg:min-w-28 min-w-24"
                       src={`https://media-assets.swiggy.com/swiggy/image/upload/${item.imageId}`}
                       alt=""
                     />
