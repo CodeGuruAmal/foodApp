@@ -58,14 +58,14 @@ const Menu = () => {
     // console.log(id)
   };
 
-console.log(menuData)
+// console.log(menuData)
 
   const handleAddToCart = (data, resData) => {
     const isAdded = cartData.find((item) => item.id === data.id);
 
     if (!isAdded) {
       if (resInfo.id === resData.id || resInfo.length === 0) {
-        dispatch(setCartData(data));
+        dispatch(setCartData({...data, qty:1}));
         dispatch(setAddedItem(data.id));
         dispatch(setResInfo(resData));
         toast.success("Item Added");
@@ -76,6 +76,8 @@ console.log(menuData)
       toast.error("Item Already Added");
     }
   };
+  // console.log(cartData)
+
 
   return (
     <>
@@ -86,12 +88,7 @@ console.log(menuData)
           <BiDish />
         </div>
 
-        <div className="menu-search flex w-full items-center border-b-2-2 pb-8 text-neutral-700">
-          <button className="text-center w-full px-4 py-2 rounded-lg bg-neutral-100 border font-[Gilroy-Semibold] text-sm">
-            Search for dishes{" "}
-          </button>
-          <IoSearch className="absolute right-2" />
-        </div>
+
 
         <div className="menu relative">
           {menuData.map(
@@ -135,13 +132,12 @@ console.log(menuData)
                   {carousel && (
                     <div className="h-slider flex my-4 w-full overflow-x-scroll gap-3 whitespace-nowrap">
                       {carousel.map((topPick, index) => {
-
                         const imageId = topPick?.creativeId;
                         const defaultPrice = topPick?.dish?.info?.defaultPrice;
                         const price = topPick?.dish?.info?.price;
 
                         return (
-                          <div className="relative" key={index}>
+                          <div className="relative" key={topPick?.bannerId}>
                             <img
                               src={`https://media-assets.swiggy.com/swiggy/image/upload/${imageId}`}
                               alt=""

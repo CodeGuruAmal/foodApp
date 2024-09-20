@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../config/firebase";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth, db, googleProvider } from "../../config/firebase";
 import toast from "react-hot-toast";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,16 +26,17 @@ const SignUp = () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       const user = auth.currentUser;
-      toast.success("Account created successfully");
+      // dispatch(addUserData(auth.currentUser))
 
       if (user) {
         await setDoc(doc(db, "user", user.uid), {
           name: name,
-          email: email
+          email: email,
         });
       }
 
       navigate("/");
+      toast.success("Account created successfully");
     } catch (error) {
       toast.error(error.message);
     }
@@ -49,20 +50,42 @@ const SignUp = () => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         dispatch(addUserData(data));
-      } else {
-        console.log("User not logged in");
       }
     });
-  };
+  }
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+  const handleGoogleSignUp = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      
+      // Check if the user exists
+      const docRef = doc(db, "user", user.uid);
+      const docSnap = await getDoc(docRef);
+  
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        dispatch(addUserData(data));
+      } else {
+        await setDoc(doc(db, "user", user.uid), {
+          name: user.displayName,
+          email: user.email,
+        });
+        dispatch(addUserData({ name: user.displayName, email: user.email }));
+      }
+  
+      navigate("/");
+      toast.success("Signed Up with Google Successfully");
+    } catch (error) {
+      console.log(error)
+      toast.error("Google Sign-Up failed");
+    }
+  };
 
   return (
     <div className="absolute top-14 left-1/2 -translate-x-1/2 w-[95%] md:w-[75%] xl:w-[60%] h-[92vh]">
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/")}
         className="text-xl duration-200 cursor-pointer hover:bg-neutral-100 mt-2 p-2 rounded-xl"
       >
         <IoArrowBack />
@@ -102,7 +125,7 @@ const SignUp = () => {
             />
 
             <input
-              // onClick={() => {setName(""); setEmail(""); setPassword("");}}
+              onClick={() => fetchUserData()}
               type="submit"
               value="Sign Up"
               className="p-2 rounded-md bg-secondaryFont cursor-pointer"
@@ -116,7 +139,7 @@ const SignUp = () => {
           </div>
 
           <div className="w-full">
-            <button className="flex gap-2 justify-center border outline-none border-neutral-300 rounded-md bg-white p-2 w-full">
+            <button onClick={handleGoogleSignUp} className="flex gap-2 justify-center border outline-none border-neutral-300 rounded-md bg-white p-2 w-full">
               <FcGoogle />
               Sign up with Google
             </button>

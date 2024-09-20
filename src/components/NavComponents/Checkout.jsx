@@ -3,28 +3,38 @@ import { useDispatch, useSelector } from "react-redux";
 import { BiFoodTag } from "react-icons/bi";
 import { TbX } from "react-icons/tb";
 import { MdStars } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setCartClick, setMenuClick } from "../../utils/navSlice";
-import { clearCart, removeItem, setAddedItem, setCartData } from "../../utils/cartSlice";
+import {
+  clearCart,
+  decrementQty,
+  incrementQty,
+  removeItem,
+  setAddedItem,
+  setCartData,
+} from "../../utils/cartSlice";
 import toast from "react-hot-toast";
 
 const Checkout = () => {
   const cartData = useSelector((state) => state?.cart?.cartData);
   const addedItem = useSelector((state) => state?.cart?.addedItem);
-  const resInfo = useSelector((state) => state.cart.resInfo);
+  const resInfo = useSelector((state) => state?.cart?.resInfo);
 
+  const userData = useSelector((state) => state?.auth?.userData);
+
+  // console.log(resInfo);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   // console.log(cartData)
 
   const [isDescExpanded, setIsDescExpanded] = useState([]);
+  const [isOrderPlaced, setIsOrderPlaced] = useState(false);
 
   const handleRemoveItem = (itemId) => {
-    if(cartData.length > 1) {
+    if (cartData.length > 1) {
       dispatch(removeItem(itemId));
-      toast.success("Item Removed")
-    }
-    else {
+      toast.success("Item Removed");
+    } else {
       handleClearCart();
     }
   };
@@ -32,7 +42,6 @@ const Checkout = () => {
   const handleClearCart = () => {
     dispatch(clearCart());
     toast.success("Cart is Cleared");
-
   };
 
   const toggleIsDescExpanded = (id) => {
@@ -47,16 +56,32 @@ const Checkout = () => {
     // console.log(id)
   };
 
-  const subTotal = cartData.reduce(
+  const togglePlaceOrder = () => {
+    setIsOrderPlaced(!isOrderPlaced);
+    if (isOrderPlaced) {
+      toast.error("Order has been Cancelled");
+    } else {
+      toast.success("Order has been Placed");
+    }
+  };
+
+  const total = cartData.reduce(
     (acc, curVal) =>
-      acc + curVal.price / 100 || acc + curVal.defaultPrice / 100,
+      acc + curVal.qty * (curVal.price / 100 || curVal.defaultPrice / 100),
     0
   );
 
-  const deliveryFee = resInfo?.feeDetails?.totalFee ? resInfo.feeDetails?.totalFee/100 : 0;
+  // // const deliveryFee = resInfo?.feeDetails?.totalFee
+  // //   ? resInfo.feeDetails?.totalFee / 100
+  // //   : 0;
 
-  const total = subTotal + deliveryFee;
+  // const totalQty = cartData.reduce((acc, item) => acc + item.qty, 0);
 
+  // // console.log(totalQty); // Output: 22 (10 + 5 + 7)
+
+  // const total = subTotal;
+
+  // console.log( cartData)
   if (cartData.length === 0) {
     return (
       <div className="absolute top-5 px-5 w-full">
@@ -127,7 +152,7 @@ const Checkout = () => {
               key={index}
               className="items-center flex justify-between  cart-items w-full px-5 py-3 pb-6 bg-white border shadow-sm rounded-xl"
             >
-              <div className="w-[75%] flex flex-col">
+              <div className="w-[75%] flex flex-col gap-1">
                 <BiFoodTag
                   className={`${
                     item?.itemAttribute?.vegClassifier
@@ -181,13 +206,33 @@ const Checkout = () => {
                     </p>
                   )}
                 </div>
+
+                <div className="mt-3 shadow-sm border flex gap-2 text-green-600 font-[Gilroy-Semibold] text-xs rounded-md items-center w-fit">
+                  <button
+                    onClick={() => dispatch(decrementQty(item.id))}
+                    className="w-7 h-7 hover:bg-neutral-200 rounded-md"
+                  >
+                    -
+                  </button>
+                  <span>{item.qty}</span>
+                  <button
+                    onClick={() => dispatch(incrementQty(item.id))}
+                    className="w-7 h-7 hover:bg-neutral-200 rounded-md"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
               <div className="relative w-[35%]">
                 <img
                   className={`w-32 md:w-36 h-28 md:h-32 mx-auto object-cover rounded-lg  ${
                     item.imageId ? "visible" : "invisible"
                   }`}
-                  src={item?.imageId ? `https://media-assets.swiggy.com/swiggy/image/upload/${item.imageId}` : "../../public/img/alt.jpg"}
+                  src={
+                    item?.imageId
+                      ? `https://media-assets.swiggy.com/swiggy/image/upload/${item.imageId}`
+                      : "../../public/img/alt.jpg"
+                  }
                   alt=""
                 />
 
@@ -205,24 +250,69 @@ const Checkout = () => {
         })}
       </div>
 
-      <div className="w-full p-5 border-2 bg-white shadow-sm mt-5 mb-5 rounded-xl">
-        <h2 className="font-[Gilroy-ExtraBold] text-secondaryFont text-2xl">
+
+      <div className="w-full p-5 border-2 bg-white shadow-sm my-5 rounded-xl">
+        <h2 className="font-[Gilroy-Bold] text-secondaryFont text-xl">
           Bill Details:
         </h2>
-        <div className="w-full border-b border-neutral-400 pb-4 mb-4 flex flex-col gap-2 text-sm text-neutral-600 mt-5 font-[Gilroy-Semibold]">
-          <div className="flex items-center justify-between">
-            <span>Subtotal:</span> <span>₹{parseFloat(subTotal.toFixed(2))}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span>Deliveryfee:</span> <span>₹{deliveryFee}</span>
+        <div className="w-full border-b border-neutral-400 pb-4 mb-4 flex flex-col gap-2 text-xs text-neutral-600 mt-5 font-[Gilroy-Medium]">
+          <div className="flex flex-col gap-2">
+            {cartData.map((item) => {
+              return (
+                <div className="flex justify-between" key={item.id}>
+                  <div className="flex gap-1"><span>{item.name}</span><span className="font-[Gilroy-Bold] text-neutral-700">(Qty: {item.qty})</span></div>
+                  <span>₹{item.price ? (item.price / 100) * item.qty : (item.defaultPrice / 100) * item.qty}</span>
+                </div>
+              )
+            })}
           </div>
         </div>
 
-        <div className="text-xl font-[Gilroy-Bold] flex items-center justify-between">
+        <div className="text-lg font-[Gilroy-Bold] flex items-center justify-between">
           <span>Total:</span>
           <span>₹{parseFloat(total.toFixed(2))}</span>
         </div>
+
       </div>
+
+      {userData ? (
+        <button
+          onClick={togglePlaceOrder}
+          className={`${
+            isOrderPlaced ? "bg-red-600 text-white" : "bg-green-600"
+          } px-4 py-2 mt-5 font-[Gilroy-Semibold] text-sm rounded-md w-full`}
+        >
+          {isOrderPlaced ? "Cancel Order" : "Place Order"}
+        </button>
+      ) : (
+        <div className="flex gap-3 my-6">
+          <button
+            onClick={() => {
+              navigate("/login");
+
+              dispatch(setCartClick(false));
+              dispatch(setMenuClick(false));
+            }}
+            className={`flex flex-col items-center border-2 border-secondaryFont px-4 py-2 mt-5 font-[Gilroy-Semibold] text-sm rounded-md `}
+          >
+            <span>Have an account?</span>
+            <span>LOGIN</span>
+          </button>
+
+          <button
+            onClick={() => {
+              navigate("/register");
+
+              dispatch(setCartClick(false));
+              dispatch(setMenuClick(false));
+            }}
+            className={`flex flex-col items-center bg-secondaryFont px-4 py-2 mt-5 font-[Gilroy-Semibold] text-sm rounded-md `}
+          >
+            <span>New to Swiggy?</span>
+            <span>SIGNUP</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

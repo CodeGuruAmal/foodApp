@@ -54,7 +54,7 @@ const Navbar = () => {
 
   const cartData = useSelector((state) => state.cart.cartData);
 
-  // const userData = useSelector((state) => state.auth.userData);
+  const userData = useSelector((state) => state.auth.userData);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -110,7 +110,6 @@ const Navbar = () => {
 
 
   const handleLogout = () => {
-    console.log("Clicked")
     dispatch(removeUserData())
   }
 
@@ -165,36 +164,69 @@ const Navbar = () => {
           <div className="right-nav md:flex text-xs items-center hidden">
             <nav className="flex gap-10">
               {menuLink.map((m, index) =>
-                  <Link
-                    to={m.path}
-                    key={index}
-                    onClick={() => {
-                      if (m.link === "Locate") {
-                        toggleLocationClick();
-                      } else if (m.link === "Cart") {
-                        toggleCartClick();
-                      } else if (m.link === "Login") {
-                        // toggleAuthClick();
-                        dispatch(setMenuClick(false));
-                      } else if (m.link === "Search") {
-                        dispatch(setMenuClick(false));
-                      }
-                    }}
-                    className="flex items-center gap-1 w-full hover:text-secondaryFont relative"
-                  >
-                    <span className="flex gap-1">
-                      {iconMapping[m.link]} {m.link}{" "}
-                      {m.link === "Cart" && (
-                        <span className="text-secondaryFont text-[.7rem] pl-1">
-                          {cartData.length > 0
-                            ? cartData.length < 100
-                              ? cartData.length
-                              : "99+"
-                            : []}
-                        </span>
-                      )}
+                 m.link !== "Login" ? 
+                 <Link
+                 to={m.path}
+                 key={index}
+                 onClick={() => {
+                   if (m.link === "Locate") {
+                     toggleLocationClick();
+                   } else if (m.link === "Cart") {
+                     toggleCartClick();
+                   } else if (m.link === "Login") {
+                     // toggleAuthClick();
+                     dispatch(setMenuClick(false));
+                   } else if (m.link === "Search") {
+                     dispatch(setMenuClick(false));
+                   }
+                 }}
+                 className="flex items-center gap-1 w-full hover:text-secondaryFont relative"
+               >
+                 <span className="flex gap-1">
+                   {iconMapping[m.link]} {m.link}{" "}
+                   {m.link === "Cart" && (
+                     <span className="text-secondaryFont text-[.7rem] pl-1">
+                       {cartData.length > 0
+                         ? cartData.length < 100
+                           ? cartData.length
+                           : "99+"
+                         : []}
+                     </span>
+                   )}
+                 </span>
+               </Link>
+                :
+                <Link
+                to={userData ? null : m.path}
+                key={index}
+                onClick={() => {
+                  if (m.link === "Locate") {
+                    toggleLocationClick();
+                  } else if (m.link === "Cart") {
+                    toggleCartClick();
+                  } else if (m.link === "Login") {
+                    // toggleAuthClick();
+                    dispatch(setMenuClick(false));
+                  } else if (m.link === "Search") {
+                    dispatch(setMenuClick(false));
+                  }
+                }}
+                className="flex items-center gap-1 w-full hover:text-secondaryFont relative"
+              >
+                <span className="flex gap-1" onClick={handleLogout}>
+                {userData ? <MdLogout /> : iconMapping[m.link]}
+                {userData ? "Logout" : m.link}
+                  {m.link === "Cart" && (
+                    <span className="text-secondaryFont text-[.7rem] pl-1">
+                      {cartData.length > 0
+                        ? cartData.length < 100
+                          ? cartData.length
+                          : "99+"
+                        : []}
                     </span>
-                  </Link>
+                  )}
+                </span>
+              </Link>
                 
               )}
             </nav>
@@ -242,6 +274,7 @@ const Navbar = () => {
 
           <nav className="flex flex-col h-full justify-center text-2xl w-full items-center px-10 gap-6 font-[Gilroy-Semibold]">
             {menuLink.map((m, index) =>
+                m.link !== "Login" ? 
                 <Link
                   to={m.path}
                   key={index}
@@ -261,6 +294,38 @@ const Navbar = () => {
                 >
                   <span className="flex gap-1">
                     {iconMapping[m.link]} {m.link}{" "}
+                    {m.link === "Cart" && (
+                      <span className="text-secondaryFont text-xl ml-2 mt-[.11rem]">
+                        {cartData.length > 0
+                          ? cartData.length < 100
+                            ? cartData.length
+                            : "99+"
+                          : []}
+                      </span>
+                    )}
+                  </span>
+                </Link>
+                 : 
+                 <Link
+                 to={userData ? null : m.path}
+                  key={index}
+                  onClick={() => {
+                    if (m.link === "Locate") {
+                      toggleLocationClick();
+                    } else if (m.link === "Cart") {
+                      toggleCartClick();
+                    } else if (m.link === "Login") {
+                      // toggleAuthClick();
+                      dispatch(setMenuClick(false));
+                    } else if (m.link === "Search") {
+                      dispatch(setMenuClick(false));
+                    }
+                  }}
+                  className="flex relative items-center gap-1 hover:text-secondaryFont px-4 py-2"
+                >
+                  <span className="flex gap-1" onClick={handleLogout}>
+                    {userData ? <MdLogout /> : iconMapping[m.link]}
+                    {userData ? "Logout" : m.link}
                     {m.link === "Cart" && (
                       <span className="text-secondaryFont text-xl ml-2 mt-[.11rem]">
                         {cartData.length > 0

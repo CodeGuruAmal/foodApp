@@ -36,7 +36,7 @@ const RestaurantForFood = () => {
     }
   }, [coordinates, id]);
 
-  console.log(foodRestaurant)
+  // console.log(foodRestaurant)
 
   const title = foodRestaurant[0]?.card?.card?.title;
   const description = foodRestaurant[0]?.card?.card?.description;

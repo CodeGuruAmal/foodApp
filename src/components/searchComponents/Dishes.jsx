@@ -25,7 +25,7 @@ const Dishes = ({ card, handleMoreDetail }) => {
 
     if (!isAdded) {
       if (resInfo.id === resData.id || resInfo.length === 0) {
-        dispatch(setCartData(data));
+        dispatch(setCartData({...data, qty:1}));
         dispatch(setAddedItem(data.id));
         dispatch(setResInfo(resData));
         toast.success("Item Added");
@@ -37,7 +37,6 @@ const Dishes = ({ card, handleMoreDetail }) => {
     }
   };
 
-  
 
   return (
     <>

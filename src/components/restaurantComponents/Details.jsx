@@ -14,7 +14,6 @@ const Details = () => {
   const place = detailsData.areaName;
   const deliveryTime = detailsData?.sla?.slaString;
   const miles = detailsData?.sla?.lastMileTravelString;
-  const feeDetails = detailsData?.feeDetails?.message;
 
   return (
     <div className="details mt-4">
@@ -36,7 +35,7 @@ const Details = () => {
             <span className="underline">{cuisines}</span>
           </div>
 
-          <div className="flex gap-4 border-b-2 border-neutral-300 pt-2 pb-3">
+          <div className="flex gap-4 pt-2 pb-3">
             <div className="flex flex-col items-center justify-center">
               <div className="w-[7px] h-[7px] bg-neutral-300 rounded-full"></div>
               <div className="w-[.5px] h-5 bg-neutral-400"></div>
@@ -53,13 +52,6 @@ const Details = () => {
             </div>
           </div>
 
-          <div className="mt-1 flex gap-2 items-center text-[.65rem] font-[Gilroy-Bold] text-neutral-500">
-            <IoBicycleSharp className="text-lg" />
-            <span className="">{miles}{" "}</span>
-            <span className="font-[Gilroy-Medium]">
-              {feeDetails ? "| " + feeDetails.split(" | ").at(-1) : []}
-            </span>
-          </div>
         </div>
       </div>
     </div>

@@ -76,9 +76,11 @@ const RestaurantMenu = () => {
     <>
       <CartRefresher />
 
+
       <div
-        className={`md:w-[75%] lg:w-[47%] w-[95%]  left-1/2 -translate-x-1/2 absolute top-20 `}
-      >
+        className={`md:w-[75%] lg:w-[47%] w-[95%]  left-1/2 -translate-x-1/2 absolute top-20 ${
+          menuClick || cartClick ? "max-h-[85vh] overflow-hidden" : ""
+        } `}>
         <div className="nav text-[.6rem] font-[Gilroy-Medium] tracking-wider text-neutral-400">
           <Link to={"/"}>Home</Link> / <span>{detailsData?.city}</span> /{" "}
           <span className="text-neutral-600">{detailsData?.name}</span>
